@@ -353,3 +353,126 @@ Base your analysis on the REAL social sentiment and market data provided above.
 // Export singleton - REAL DATA ONLY
 export const lunarCrushEnhanced = new LunarCrushEnhancedService();
 export { LunarCrushEnhancedService };
+
+// === PHASE 3.1: MULTI-TIMEFRAME ANALYSIS EXTENSIONS ===
+
+export interface TimeframePrediction {
+	timeframe: '1h' | '4h' | '24h' | '7d' | '30d';
+	price_target: number;
+	confidence_score: number;
+	reasoning: string;
+	risk_level: 'LOW' | 'MEDIUM' | 'HIGH';
+	volume_expectation: number;
+}
+
+export interface MultitimeframePredictionData extends PredictionData {
+	multi_timeframe: {
+		predictions: TimeframePrediction[];
+		confidence_trend: 'INCREASING' | 'DECREASING' | 'STABLE';
+		overall_trend: 'BULLISH' | 'BEARISH' | 'NEUTRAL';
+		best_entry_timeframe: string;
+		risk_timeline: {
+			short_term: 'LOW' | 'MEDIUM' | 'HIGH';
+			medium_term: 'LOW' | 'MEDIUM' | 'HIGH';
+			long_term: 'LOW' | 'MEDIUM' | 'HIGH';
+		};
+	};
+}
+
+// Multi-timeframe AI analysis function
+async function getMultitimeframeAnalysis(
+	symbol: string,
+	baseAnalysis: PredictionData
+): Promise<MultitimeframePredictionData> {
+	try {
+		console.log(`🔮 MULTI-TIMEFRAME AI ANALYSIS: ${symbol}`);
+
+		const genAI = new GoogleGenerativeAI(
+			process.env.NEXT_PUBLIC_GEMINI_API_KEY!
+		);
+		const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+
+		const prompt = `
+You are an institutional-grade crypto analyst. Analyze ${symbol} across multiple timeframes.
+
+CURRENT DATA:
+- Symbol: ${symbol}
+- Current Price: $${baseAnalysis.current_price}
+- Galaxy Score: ${baseAnalysis.social_metrics.galaxy_score}
+- 24h Volume: ${baseAnalysis.social_metrics.social_volume_24h}
+- Sentiment: ${baseAnalysis.social_metrics.sentiment}
+- Social Dominance: ${baseAnalysis.social_metrics.social_dominance}
+
+PROVIDE INSTITUTIONAL-GRADE MULTI-TIMEFRAME ANALYSIS:
+
+1. TIMEFRAME PREDICTIONS (provide specific price targets):
+   - 1h: Price target, confidence (0-100), risk level, reasoning
+   - 4h: Price target, confidence (0-100), risk level, reasoning
+   - 24h: Price target, confidence (0-100), risk level, reasoning
+   - 7d: Price target, confidence (0-100), risk level, reasoning
+   - 30d: Price target, confidence (0-100), risk level, reasoning
+
+2. TREND ANALYSIS:
+   - Confidence trend: INCREASING/DECREASING/STABLE
+   - Overall trend: BULLISH/BEARISH/NEUTRAL
+   - Best entry timeframe: Which timeframe offers best risk/reward
+
+3. RISK TIMELINE:
+   - Short-term risk (1h-24h): LOW/MEDIUM/HIGH
+   - Medium-term risk (1d-7d): LOW/MEDIUM/HIGH
+   - Long-term risk (7d-30d): LOW/MEDIUM/HIGH
+
+Format as JSON only:
+{
+  "predictions": [
+    {
+      "timeframe": "1h",
+      "price_target": number,
+      "confidence_score": number,
+      "reasoning": "specific technical reasoning",
+      "risk_level": "LOW|MEDIUM|HIGH",
+      "volume_expectation": number
+    }
+    // ... for each timeframe
+  ],
+  "confidence_trend": "INCREASING|DECREASING|STABLE",
+  "overall_trend": "BULLISH|BEARISH|NEUTRAL",
+  "best_entry_timeframe": "explanation",
+  "risk_timeline": {
+    "short_term": "LOW|MEDIUM|HIGH",
+    "medium_term": "LOW|MEDIUM|HIGH",
+    "long_term": "LOW|MEDIUM|HIGH"
+  }
+}`;
+
+		const result = await model.generateContent(prompt);
+		const responseText = result.response.text();
+
+		// Parse AI response
+		const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+		if (!jsonMatch) {
+			throw new Error(
+				'Invalid AI response format for multi-timeframe analysis'
+			);
+		}
+
+		const multiTimeframeData = JSON.parse(jsonMatch[0]);
+
+		// Return extended prediction data
+		return {
+			...baseAnalysis,
+			multi_timeframe: multiTimeframeData,
+		};
+	} catch (error) {
+		console.error('❌ Multi-timeframe analysis failed:', error);
+		throw new Error(
+			`Multi-timeframe analysis failed: ${getErrorMessage(error)}`
+		);
+	}
+}
+
+// Export the enhanced service
+export const lunarCrushMultiTimeframe = {
+	...lunarCrushEnhanced,
+	getMultitimeframeAnalysis,
+};
