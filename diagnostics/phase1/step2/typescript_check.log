@@ -1,4 +1,4 @@
 Running TypeScript check...
 yarn run v1.22.22
 $ /Users/batson/Desktop/ForTheNerds/CreatorBid/lunar-oracle/node_modules/.bin/tsc --noEmit
-Done in 2.51s.
+Done in 2.16s.

@@ -17,18 +17,26 @@ $ next build
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ✓ Compiled successfully in 3.0s
+ ✓ Compiled successfully in 1000ms
    Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/5) ...
+   Generating static pages (1/5) 
+   Generating static pages (2/5) 
+   Generating static pages (3/5) 
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
 
-Failed to compile.
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    2.37 kB         102 kB
+└ ○ /_not-found                            991 B         101 kB
++ First Load JS shared by all            99.6 kB
+  ├ chunks/4bd1b696-cf72ae8a39fa05aa.js  54.1 kB
+  ├ chunks/964-7a34cadcb7695cec.js       43.5 kB
+  └ other shared chunks (total)           1.9 kB
 
-./src/components/dashboard/MainDashboard.tsx
-135:92  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-136:72  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
 
-./src/components/shared/ErrorBoundary.tsx
-24:46  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+○  (Static)  prerendered as static content
 
-info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+Done in 16.37s.

@@ -6,6 +6,16 @@ import Loading from '../shared/Loading';
 export default function MainDashboard() {
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleAnalyze = (crypto: string) => {
+    setIsLoading(true);
+    console.log(`Analyzing ${crypto}...`);
+    // Simulate API call - we'll connect real APIs in Phase 2
+    setTimeout(() => {
+      setIsLoading(false);
+      console.log(`${crypto} analysis complete`);
+    }, 2000);
+  };
+
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
@@ -37,30 +47,23 @@ export default function MainDashboard() {
           {/* Action Buttons */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             <button
-              onClick={() => {
-                setIsLoading(true);
-                // Simulate API call
-                setTimeout(() => setIsLoading(false), 2000);
-              }}
-              className="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+              onClick={() => handleAnalyze('Bitcoin')}
+              disabled={isLoading}
+              className="px-8 py-4 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 disabled:transform-none"
             >
               ANALYZE BITCOIN
             </button>
             <button
-              onClick={() => {
-                setIsLoading(true);
-                setTimeout(() => setIsLoading(false), 2000);
-              }}
-              className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+              onClick={() => handleAnalyze('Ethereum')}
+              disabled={isLoading}
+              className="px-8 py-4 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 disabled:transform-none"
             >
               ANALYZE ETHEREUM
             </button>
             <button
-              onClick={() => {
-                setIsLoading(true);
-                setTimeout(() => setIsLoading(false), 2000);
-              }}
-              className="px-8 py-4 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+              onClick={() => handleAnalyze('Solana')}
+              disabled={isLoading}
+              className="px-8 py-4 bg-purple-500 hover:bg-purple-600 disabled:bg-purple-300 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 disabled:transform-none"
             >
               ANALYZE SOLANA
             </button>
