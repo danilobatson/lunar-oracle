@@ -1,0 +1,10 @@
+{
+  "typescript_check": {
+    "passed": true,
+    "exit_code": 0
+  },
+  "build_test": {
+    "passed": true,
+    "exit_code": 0
+  }
+}

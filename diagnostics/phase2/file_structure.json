@@ -1,0 +1,15 @@
+{
+  "src_files": [
+"src/app/layout.tsx","src/app/metadata.ts","src/app/page.tsx","src/components/dashboard/MainDashboard.tsx","src/components/shared/ErrorBoundary.tsx","src/components/shared/Loading.tsx","src/lib/gemini.ts","src/lib/lunarcrush.ts"
+  ],
+  "total_files":        8,
+  "components_found": [
+"src/components/dashboard/MainDashboard.tsx","src/components/shared/ErrorBoundary.tsx","src/components/shared/Loading.tsx"
+  ],
+  "lib_files": [
+"src/lib/gemini.ts","src/lib/lunarcrush.ts"
+  ],
+  "api_routes": [
+
+  ]
+}

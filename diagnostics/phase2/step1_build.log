@@ -1,0 +1,33 @@
+yarn run v1.22.22
+$ next build
+ ⚠ Warning: Found multiple lockfiles. Selecting /Users/batson/package-lock.json.
+   Consider removing the lockfiles at:
+   * /Users/batson/Desktop/ForTheNerds/CreatorBid/lunar-oracle/package-lock.json
+
+   ▲ Next.js 15.4.6
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (198kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully in 1000ms
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/lib/lunarcrush-enhanced.ts:1:10
+Type error: '"lunarcrush-sdk"' has no exported member named 'LunarCrushSDK'. Did you mean 'LunarCrush'?
+
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { [33mLunarCrushSDK[39m } [36mfrom[39m [32m'lunarcrush-sdk'[39m[33m;[39m
+ [90m   |[39m          [31m[1m^[22m[39m
+ [90m 2 |[39m [36mimport[39m { [33mGoogleGenerativeAI[39m } [36mfrom[39m [32m'@google/generative-ai'[39m[33m;[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Types for our enhanced service[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
