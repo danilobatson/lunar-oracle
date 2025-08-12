@@ -22,7 +22,7 @@ class ClientSafeLunarCrush {
   private endpoint = 'https://lunarcrush.cryptoguard-api.workers.dev/graphql';
 
   constructor(apiKey: string) {
-    this.apiKey = apiKey
+    this.apiKey = apiKey;
   }
 
   private async makeRequest(query: string, variables?: any): Promise<any> {
