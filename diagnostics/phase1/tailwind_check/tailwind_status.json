@@ -1,0 +1,7 @@
+{
+  "timestamp": "2025-08-12T06:26:08Z",
+  "tailwind_config_exists": false,
+  "postcss_config_exists": false,
+  "globals_css_has_tailwind": false,
+  "tailwind_in_package_json": false
+}

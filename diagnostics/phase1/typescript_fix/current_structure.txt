@@ -1,0 +1,18 @@
+Current src structure:
+src
+├── app
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── metadata.ts
+│   ├── page.tsx
+│   └── test
+├── components
+│   ├── crypto
+│   ├── dashboard
+│   └── shared
+└── lib
+    ├── gemini.ts
+    └── lunarcrush.ts
+
+8 directories, 7 files
