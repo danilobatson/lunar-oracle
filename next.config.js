@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // CORS headers for API access
   async headers() {
     return [
       {
-        // Apply to all routes
         source: '/(.*)',
         headers: [
           {
@@ -22,13 +22,31 @@ const nextConfig = {
       },
     ]
   },
-  // Disable built-in CORS handling that might interfere
-  async rewrites() {
-    return []
+
+  // Optimize for Vercel deployment
+  output: 'standalone',
+
+  // Ensure environment variables work properly
+  env: {
+    NEXT_PUBLIC_LUNARCRUSH_API_KEY: process.env.NEXT_PUBLIC_LUNARCRUSH_API_KEY,
+    NEXT_PUBLIC_GEMINI_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY,
   },
-  // Ensure external requests work properly
-  experimental: {
-    externalDir: true,
+
+  // Production optimizations
+  poweredByHeader: false,
+  compress: true,
+
+  // Vercel-specific settings
+  trailingSlash: false,
+
+  // Ensure TypeScript builds properly
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+
+  // ESLint configuration for deployment
+  eslint: {
+    ignoreDuringBuilds: false,
   },
 }
 
