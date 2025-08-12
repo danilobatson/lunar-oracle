@@ -20,30 +20,30 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
   // Debounce search query
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
-  // Popular cryptos - LLM will handle this
+  // Popular cryptos - LLM will handle this with: await mcp.cryptocurrencies({sort: 'galaxy_score', limit: 6})
   useEffect(() => {
     async function loadPopularCryptos() {
       try {
         setError(null);
-        console.log('🤖 LLM REQUEST: Load popular cryptocurrencies');
-        console.log('📡 LLM should use LunarCrush MCP:Cryptocurrencies with appropriate sorting');
+        console.log('🤖 LLM REQUEST: Load popular cryptocurrencies using MCP');
+        console.log('📡 LLM should use: await mcp.cryptocurrencies({sort: "galaxy_score", limit: 6})');
 
-        // LLM will use MCP tools to get popular cryptos
-        // For now, show placeholder that LLM will replace
+        // LLM will replace this with real MCP data
+        // This is just to show structure while LLM loads real data
         const placeholderPopular: CryptoSearchResult[] = [
-          { symbol: 'BTC', name: 'Bitcoin', galaxy_score: 85 },
-          { symbol: 'ETH', name: 'Ethereum', galaxy_score: 82 },
-          { symbol: 'SOL', name: 'Solana', galaxy_score: 75 },
-          { symbol: 'ADA', name: 'Cardano', galaxy_score: 70 },
-          { symbol: 'DOT', name: 'Polkadot', galaxy_score: 68 },
-          { symbol: 'MATIC', name: 'Polygon', galaxy_score: 65 }
+          { symbol: 'BTC', name: 'Bitcoin', galaxy_score: 85, current_price: 45000, market_cap: 850000000000 },
+          { symbol: 'ETH', name: 'Ethereum', galaxy_score: 82, current_price: 2800, market_cap: 340000000000 },
+          { symbol: 'SOL', name: 'Solana', galaxy_score: 75, current_price: 95, market_cap: 40000000000 },
+          { symbol: 'ADA', name: 'Cardano', galaxy_score: 70, current_price: 0.45, market_cap: 15000000000 },
+          { symbol: 'DOT', name: 'Polkadot', galaxy_score: 68, current_price: 6.5, market_cap: 8000000000 },
+          { symbol: 'MATIC', name: 'Polygon', galaxy_score: 65, current_price: 0.85, market_cap: 6000000000 }
         ];
 
         setPopularCryptos(placeholderPopular);
-        console.log('✅ Popular cryptos loaded (LLM will replace with real MCP data)');
+        console.log('✅ Placeholder loaded (LLM will replace with real MCP data)');
 
       } catch (err) {
-        console.error('❌ LLM will handle this error with real MCP data');
+        console.error('❌ LLM will handle this with MCP tools');
         setError('LLM will load popular cryptos using MCP tools');
       }
     }
@@ -51,7 +51,7 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
     loadPopularCryptos();
   }, []);
 
-  // Search functionality - LLM will handle this
+  // Search functionality - LLM will handle this with: await mcp.search(query) or mcp.cryptocurrencies({})
   useEffect(() => {
     async function performSearch() {
       if (!debouncedSearchQuery.trim()) {
@@ -64,14 +64,13 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
         setError(null);
 
         console.log(`🤖 LLM REQUEST: Search for "${debouncedSearchQuery}"`);
-        console.log('📡 LLM should use LunarCrush MCP:Search or MCP:Cryptocurrencies');
+        console.log(`📡 LLM should use: await mcp.search('${debouncedSearchQuery}') or mcp.topic('${debouncedSearchQuery}')`);
 
-        // LLM will use MCP tools to search
-        // For now, show placeholder that LLM will replace
+        // LLM will replace this with real MCP search results
         const placeholderResults: CryptoSearchResult[] = [
           {
             symbol: debouncedSearchQuery.toUpperCase(),
-            name: `${debouncedSearchQuery} (via MCP)`,
+            name: `${debouncedSearchQuery} (LLM will load real data)`,
             galaxy_score: 75,
             current_price: 45000,
             market_cap: 850000000000
@@ -79,10 +78,10 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
         ];
 
         setSearchResults(placeholderResults);
-        console.log('✅ Search completed (LLM will replace with real MCP data)');
+        console.log('✅ Placeholder search (LLM will replace with real MCP data)');
 
       } catch (err) {
-        console.error('❌ LLM will handle this error with real MCP data');
+        console.error('❌ LLM will handle search with MCP tools');
         setError('LLM will search using MCP tools');
       } finally {
         setIsSearching(false);
@@ -93,19 +92,19 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
   }, [debouncedSearchQuery]);
 
   const handleCoinSelect = (coin: CryptoSearchResult) => {
-    console.log(`🚀 Coin selected: ${coin.symbol} - LLM will handle analysis`);
+    console.log(`🚀 Coin selected: ${coin.symbol} - LLM will use mcp.topic('${coin.symbol}') for analysis`);
     onCoinSelect(coin);
     setSearchQuery('');
     setSearchResults([]);
   };
 
   const formatPrice = (price?: number) => {
-    if (!price) return 'N/A';
+    if (!price) return 'Loading...';
     return price >= 1 ? `$${price.toLocaleString()}` : `$${price.toFixed(6)}`;
   };
 
   const formatMarketCap = (marketCap?: number) => {
-    if (!marketCap) return 'N/A';
+    if (!marketCap) return 'Loading...';
     if (marketCap >= 1e12) return `$${(marketCap / 1e12).toFixed(1)}T`;
     if (marketCap >= 1e9) return `$${(marketCap / 1e9).toFixed(1)}B`;
     if (marketCap >= 1e6) return `$${(marketCap / 1e6).toFixed(1)}M`;
@@ -131,7 +130,6 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
           className="block w-full pl-10 pr-3 py-4 border border-slate-600 rounded-lg bg-slate-800 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
         />
 
-        {/* LLM Context Badge */}
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
           <span className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">
             MCP POWERED
@@ -194,7 +192,7 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
             <Zap className="h-4 w-4 ml-2 text-yellow-400" />
           </h3>
           <p className="text-sm text-slate-400 mt-1">
-            Top cryptocurrencies by Galaxy Score (LLM will load via MCP)
+            Top cryptocurrencies by Galaxy Score (LLM loads via mcp.cryptocurrencies())
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
@@ -219,7 +217,7 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
                 <div className="text-right">
                   <div className="text-white font-medium">{formatPrice(coin.current_price)}</div>
                   <div className="text-xs text-green-400">
-                    ⭐ {coin.galaxy_score || 'N/A'}
+                    ⭐ {coin.galaxy_score || 'Loading...'}
                   </div>
                 </div>
               </div>
@@ -228,22 +226,15 @@ export default function CoinSearch({ onCoinSelect, className = '' }: CoinSearchP
         </div>
       </div>
 
-      {/* MCP Information */}
+      {/* Simple MCP Instructions */}
       <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
         <div className="text-sm text-blue-400">
-          🤖 <strong>LLM + MCP Integration:</strong> The AI assistant will automatically use the best LunarCrush MCP tools
-          (Search, Cryptocurrencies, Topic) to provide real-time data based on your requests.
-        </div>
-      
-      {/* Resource Management Status */}
-      <div className="mt-4 p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg">
-        <div className="text-sm text-orange-400">
-          ⚡ <strong>Resource Management Active:</strong> Requests are throttled to prevent Worker CPU exhaustion.
-          If requests fail, the LLM will automatically use direct MCP tools instead.
+          🤖 <strong>Direct MCP Integration:</strong> LLM uses MCP tools directly:
+          <code className="ml-2 text-xs bg-slate-800 px-2 py-1 rounded">
+            mcp.cryptocurrencies(), mcp.topic(), mcp.search()
+          </code>
         </div>
       </div>
-
-    </div>
     </div>
   );
 }

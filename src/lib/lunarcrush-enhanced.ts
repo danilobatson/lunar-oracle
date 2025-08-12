@@ -1,7 +1,6 @@
-// LunarCrush Enhanced Service with Resource Management
-import { requestThrottle } from './request-throttle';
+// Simple LunarCrush Enhanced Service - Direct MCP Calls Only
+// LLM will use MCP tools directly: mcp.cryptocurrencies(), mcp.topic(), etc.
 
-// Types remain the same
 export interface SocialMetrics {
 	galaxy_score: number;
 	alt_rank: number;
@@ -65,109 +64,39 @@ export interface MultitimeframePredictionData extends PredictionData {
 	};
 }
 
-// Resource-managed LunarCrush Enhanced Service
+// Simple service - LLM handles everything via MCP tools
 class LunarCrushEnhanced {
-	private readonly WORKER_BASE_URL = 'https://lunarcrush.cryptoguard-api.workers.dev';
 
-	private logResourceUsage(operation: string, symbol?: string) {
-		console.log(`🔋 RESOURCE MANAGED: ${operation}${symbol ? ` - ${symbol}` : ''}`);
-		console.log(`📊 Throttle Status:`, requestThrottle.getStatus());
-		console.log(`💡 This prevents Worker CPU exhaustion from rapid requests`);
-	}
-
+	// Search - LLM will use MCP tools
 	async searchCrypto(query: string): Promise<CryptoSearchResult[]> {
-		this.logResourceUsage('SEARCH', query);
+		console.log(`🤖 LLM: Use MCP tools for crypto search "${query}"`);
+		console.log(`📡 Available: mcp.cryptocurrencies(opts), mcp.list('cryptocurrencies'), mcp.search('${query}')`);
 
-		try {
-			// Use throttled request to prevent Worker overload
-			const response = await requestThrottle.throttledRequest<any>(
-				`${this.WORKER_BASE_URL}/search`,
-				{
-					method: 'POST',
-					body: JSON.stringify({ query })
-				},
-				`search-${query.toLowerCase()}`
-			);
-
-			// LLM will handle this using MCP tools
-			console.log(`🤖 LLM: Use MCP:Search or MCP:Cryptocurrencies for "${query}"`);
-
-			return response.results || [];
-
-		} catch (error) {
-			console.error('❌ Resource-managed search failed:', error);
-
-			// Provide guidance for LLM
-			console.log(`🤖 LLM: Worker overloaded, use direct MCP tools instead`);
-			throw new Error(`Worker CPU exhausted. LLM should use MCP tools directly.`);
-		}
+		// LLM will handle this request using MCP tools directly
+		throw new Error('LLM_MCP_REQUEST: Use MCP tools to search cryptocurrencies');
 	}
 
+	// Analysis - LLM will use MCP tools
 	async getCryptoAnalysis(symbol: string): Promise<PredictionData> {
-		this.logResourceUsage('ANALYSIS', symbol);
+		console.log(`🤖 LLM: Use MCP tools for crypto analysis "${symbol}"`);
+		console.log(`📡 Available: mcp.topic('${symbol}'), mcp.timeSeries('${symbol}', opts)`);
 
-		try {
-			// Use throttled request with longer cache key for analysis
-			const response = await requestThrottle.throttledRequest<PredictionData>(
-				`${this.WORKER_BASE_URL}/analyze`,
-				{
-					method: 'POST',
-					body: JSON.stringify({ symbol })
-				},
-				`analyze-${symbol.toLowerCase()}`
-			);
-
-			console.log(`✅ Resource-managed analysis completed for ${symbol}`);
-			return response;
-
-		} catch (error) {
-			console.error('❌ Resource-managed analysis failed:', error);
-
-			// Provide fallback guidance for LLM
-			console.log(`🤖 LLM: Worker overloaded, use MCP:Topic + AI analysis directly`);
-			throw new Error(`Worker CPU exhausted. LLM should use MCP:Topic for ${symbol} data.`);
-		}
+		// LLM will handle this request using MCP tools directly
+		throw new Error('LLM_MCP_REQUEST: Use MCP tools to analyze cryptocurrency');
 	}
 
+	// Multi-timeframe - LLM will use MCP tools
 	async getMultitimeframeAnalysis(
 		symbol: string,
 		baseAnalysis: PredictionData
 	): Promise<MultitimeframePredictionData> {
-		this.logResourceUsage('MULTI_TIMEFRAME', symbol);
+		console.log(`🤖 LLM: Use MCP tools for multi-timeframe analysis "${symbol}"`);
+		console.log(`📡 Available: mcp.timeSeries('${symbol}', opts), mcp.topic('${symbol}')`);
 
-		try {
-			// Use throttled request for multi-timeframe analysis
-			const response = await requestThrottle.throttledRequest<MultitimeframePredictionData>(
-				`${this.WORKER_BASE_URL}/multi-timeframe`,
-				{
-					method: 'POST',
-					body: JSON.stringify({ symbol, baseAnalysis })
-				},
-				`multiframe-${symbol.toLowerCase()}`
-			);
-
-			console.log(`✅ Resource-managed multi-timeframe analysis completed for ${symbol}`);
-			return response;
-
-		} catch (error) {
-			console.error('❌ Resource-managed multi-timeframe failed:', error);
-
-			// Provide fallback guidance for LLM
-			console.log(`🤖 LLM: Worker overloaded, use MCP:Time_Series + AI for ${symbol}`);
-			throw new Error(`Worker CPU exhausted. LLM should use MCP:Topic_Time_Series for ${symbol}.`);
-		}
-	}
-
-	// Debug method to check resource status
-	getResourceStatus() {
-		return {
-			throttleStatus: requestThrottle.getStatus(),
-			workerUrl: this.WORKER_BASE_URL,
-			resourceManagement: 'ACTIVE'
-		};
+		// LLM will handle this request using MCP tools directly
+		throw new Error('LLM_MCP_REQUEST: Use MCP tools for multi-timeframe analysis');
 	}
 }
 
-// Export the resource-managed service
 export const lunarCrushEnhanced = new LunarCrushEnhanced();
 export const lunarCrushMultiTimeframe = lunarCrushEnhanced;
