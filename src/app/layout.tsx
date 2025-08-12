@@ -1,19 +1,24 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'LunarOracle - Crypto Intelligence Platform',
-  description: 'AI-powered crypto predictions with social sentiment analysis',
-};
+  title: 'LunarOracle - AI Crypto Predictions',
+  description: 'AI-powered cryptocurrency predictions using real-time social sentiment analysis',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        {children}
+      </body>
     </html>
-  );
+  )
 }

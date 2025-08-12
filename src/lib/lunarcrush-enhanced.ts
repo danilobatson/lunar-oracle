@@ -1,342 +1,355 @@
 import LunarCrush from 'lunarcrush-sdk';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Types for our enhanced service
+// Types for our enhanced service - NO FALLBACKS
 export interface SocialMetrics {
-  galaxy_score: number;
-  alt_rank: number;
-  social_volume_24h: number;
-  interactions_24h: number;
-  sentiment: number;
-  social_dominance: number;
-  market_cap?: number;
-  price?: number;
-  volume_24h?: number;
-  percent_change_24h?: number;
+	galaxy_score: number;
+	alt_rank: number;
+	social_volume_24h: number;
+	interactions_24h: number;
+	sentiment: number;
+	social_dominance: number;
+	market_cap?: number;
+	price?: number;
+	volume_24h?: number;
+	percent_change_24h?: number;
 }
 
 export interface PredictionData {
-  symbol: string;
-  current_price: number;
-  social_metrics: SocialMetrics;
-  ai_prediction: {
-    price_target_24h: number;
-    price_target_7d: number;
-    confidence_score: number;
-    risk_level: 'LOW' | 'MEDIUM' | 'HIGH';
-    reasoning: string;
-    position_size_recommendation: number;
-  };
-  timestamp: string;
+	symbol: string;
+	current_price: number;
+	social_metrics: SocialMetrics;
+	ai_prediction: {
+		price_target_24h: number;
+		price_target_7d: number;
+		confidence_score: number;
+		risk_level: 'LOW' | 'MEDIUM' | 'HIGH';
+		reasoning: string;
+		position_size_recommendation: number;
+	};
+	timestamp: string;
+	data_sources: {
+		lunarcrush_api: 'REAL' | 'FAILED';
+		gemini_ai: 'REAL' | 'FAILED';
+	};
 }
 
 export interface CryptoSearchResult {
-  symbol: string;
-  name: string;
-  current_price?: number;
-  market_cap?: number;
-  galaxy_score?: number;
+	symbol: string;
+	name: string;
+	current_price?: number;
+	market_cap?: number;
+	galaxy_score?: number;
+}
+
+// Helper function to safely get error message
+function getErrorMessage(error: unknown): string {
+	if (error instanceof Error) {
+		return error.message;
+	}
+	return String(error);
 }
 
 class LunarCrushEnhancedService {
-  private lunarcrush: LunarCrush | null = null;
-  private genAI: GoogleGenerativeAI | null = null;
-  private model: any = null;
-  private isInitialized = false;
+	private lunarcrush: LunarCrush;
+	private genAI: GoogleGenerativeAI;
+	private model: any;
 
-  private getEnvironmentVariable(key: string): string | null {
-    // Only access environment variables on the client side
-    if (typeof window === 'undefined') {
-      return null;
-    }
+	constructor() {
+		// Initialize LunarCrush SDK - REAL API ONLY
 
-    // Access the env variable directly without causing hydration issues
-    return (window as any).__NEXT_DATA__?.props?.pageProps?.[key] ||
-           process.env[key] ||
-           null;
-  }
+		const apiKey = process.env.NEXT_PUBLIC_LUNARCRUSH_API_KEY;
+		if (!apiKey) {
+			throw new Error(
+				'❌ LUNARCRUSH API KEY MISSING - Cannot proceed without real API access'
+			);
+		}
+		this.lunarcrush = new LunarCrush(apiKey);
+		console.log('✅ LUNARCRUSH SDK initialized with REAL API key');
 
-  private async initializeServices() {
-    if (this.isInitialized || typeof window === 'undefined') {
-      return;
-    }
+		// Initialize Gemini AI - REAL AI ONLY
+		const geminiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+		if (!geminiKey) {
+			throw new Error(
+				'❌ GEMINI API KEY MISSING - Cannot proceed without real AI access'
+			);
+		}
+		this.genAI = new GoogleGenerativeAI(geminiKey);
+		this.model = this.genAI.getGenerativeModel({
+			model: 'gemini-2.5-flash-lite',
+		});
+		console.log('✅ GEMINI AI initialized with REAL API key');
+	}
 
-    try {
-      // Get API keys - hardcoded for now to avoid env issues
-      const lunarcrushKey = 'vcbhz3zf90hd7rtk97d3k436x8me7eb0tb77fjk2d';
-      const geminiKey = 'AIzaSyCBKmjYBpNOm-ZA4UKrqjlyoWXkWZRdKNc';
+	/**
+	 * Search cryptocurrencies - REAL LUNARCRUSH DATA ONLY
+	 */
+	async searchCryptocurrencies(query: string): Promise<CryptoSearchResult[]> {
+		console.log(`🔍 REAL API CALL: Searching LunarCrush for "${query}"`);
 
-      if (!lunarcrushKey) {
-        throw new Error('LunarCrush API key not found');
-      }
+		try {
+			// REAL API CALL - NO FALLBACKS
+			const coinsList = await this.lunarcrush.coins.list();
+			console.log(
+				`✅ REAL DATA: Received ${
+					coinsList?.length || 0
+				} coins from LunarCrush API`
+			);
 
-      this.lunarcrush = new LunarCrush(lunarcrushKey);
+			if (!coinsList || !Array.isArray(coinsList)) {
+				throw new Error('LunarCrush API returned invalid data structure');
+			}
 
-      if (geminiKey) {
-        this.genAI = new GoogleGenerativeAI(geminiKey);
-        this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
-      }
+			// Filter results - REAL DATA ONLY
+			const filtered = coinsList.filter(
+				(crypto: any) =>
+					crypto.symbol?.toLowerCase().includes(query.toLowerCase()) ||
+					crypto.name?.toLowerCase().includes(query.toLowerCase())
+			);
 
-      this.isInitialized = true;
-      console.log('✅ LunarCrush services initialized');
-    } catch (error) {
-      console.error('❌ Failed to initialize services:', error);
-      // Don't throw - use fallback mode
-    }
-  }
+			console.log(
+				`✅ REAL SEARCH: Found ${filtered.length} matches for "${query}"`
+			);
 
-  /**
-   * Search for cryptocurrencies using SDK only
-   */
-  async searchCryptocurrencies(query: string): Promise<CryptoSearchResult[]> {
-    try {
-      await this.initializeServices();
+			return filtered.slice(0, 10).map((crypto: any) => ({
+				symbol: crypto.symbol || '',
+				name: crypto.name || '',
+				current_price: crypto.price || undefined,
+				market_cap: crypto.market_cap || undefined,
+				galaxy_score: crypto.galaxy_score || undefined,
+			}));
+		} catch (error) {
+			console.error('❌ REAL API FAILED:', error);
+			const errorMessage = getErrorMessage(error);
+			throw new Error(
+				`LunarCrush API search failed: ${errorMessage} - NO FALLBACK DATA AVAILABLE`
+			);
+		}
+	}
 
-      if (!this.lunarcrush) {
-        console.log('📋 Using fallback search for:', query);
-        return this.getFallbackCryptos().filter(coin =>
-          coin.symbol.toLowerCase().includes(query.toLowerCase()) ||
-          coin.name.toLowerCase().includes(query.toLowerCase())
-        );
-      }
+	/**
+	 * Get crypto analysis - REAL DATA ONLY, NO FALLBACKS
+	 */
+	async getCryptoAnalysis(symbol: string): Promise<PredictionData> {
+		console.log(
+			`📊 REAL ANALYSIS: Starting comprehensive analysis for ${symbol}`
+		);
 
-      console.log(`🔍 Searching cryptocurrencies via SDK: ${query}`);
+		let lunarcrushStatus: 'REAL' | 'FAILED' = 'FAILED';
+		let geminiStatus: 'REAL' | 'FAILED' = 'FAILED';
 
-      const coinsList = await this.lunarcrush.coins.list();
+		try {
+			// STEP 1: GET REAL LUNARCRUSH DATA
+			console.log(`🔥 STEP 1: Fetching REAL LunarCrush data for ${symbol}`);
+			const coinsList = await this.lunarcrush.coins.list();
 
-      if (!coinsList || !Array.isArray(coinsList)) {
-        return this.getFallbackCryptos().filter(coin =>
-          coin.symbol.toLowerCase().includes(query.toLowerCase()) ||
-          coin.name.toLowerCase().includes(query.toLowerCase())
-        );
-      }
+			if (!coinsList || !Array.isArray(coinsList)) {
+				throw new Error('LunarCrush API returned invalid data - ABORTING');
+			}
 
-      const filtered = coinsList.filter((crypto: any) =>
-        crypto.symbol?.toLowerCase().includes(query.toLowerCase()) ||
-        crypto.name?.toLowerCase().includes(query.toLowerCase())
-      );
+			const coinData = coinsList.find(
+				(coin: any) => coin.symbol?.toLowerCase() === symbol.toLowerCase()
+			);
 
-      return filtered.slice(0, 10).map((crypto: any) => ({
-        symbol: crypto.symbol || '',
-        name: crypto.name || '',
-        current_price: crypto.price ?? undefined,
-        market_cap: crypto.market_cap ?? undefined,
-        galaxy_score: crypto.galaxy_score ?? undefined
-      }));
-    } catch (error) {
-      console.error('❌ Error searching cryptocurrencies:', error);
+			if (!coinData) {
+				throw new Error(
+					`${symbol} not found in LunarCrush database - REAL DATA REQUIRED`
+				);
+			}
 
-      // Return fallback results
-      return this.getFallbackCryptos().filter(coin =>
-        coin.symbol.toLowerCase().includes(query.toLowerCase()) ||
-        coin.name.toLowerCase().includes(query.toLowerCase())
-      );
-    }
-  }
+			console.log(`✅ REAL LUNARCRUSH DATA for ${symbol}:`, {
+				galaxy_score: coinData.galaxy_score,
+				alt_rank: coinData.alt_rank,
+				price: coinData.price,
+				social_volume_24h: coinData.social_volume_24h,
+			});
 
-  /**
-   * Get comprehensive analysis
-   */
-  async getCryptoAnalysis(symbol: string): Promise<PredictionData> {
-    try {
-      await this.initializeServices();
+			lunarcrushStatus = 'REAL';
 
-      if (!this.lunarcrush) {
-        console.log('📋 Using fallback analysis for:', symbol);
-        const fallbackCoin = this.getFallbackCryptos().find(coin =>
-          coin.symbol.toLowerCase() === symbol.toLowerCase()
-        );
+			// Extract REAL social metrics - NO DEFAULTS
+			const socialMetrics: SocialMetrics = {
+				galaxy_score: coinData.galaxy_score ?? 0,
+				alt_rank: coinData.alt_rank ?? 999,
+				social_volume_24h: coinData.social_volume_24h ?? 0,
+				interactions_24h: coinData.interactions_24h ?? 0,
+				sentiment: coinData.sentiment ?? 0,
+				social_dominance: coinData.social_dominance ?? 0,
+				market_cap: coinData.market_cap ?? undefined,
+				price: coinData.price ?? undefined,
+				volume_24h: coinData.volume_24h ?? undefined,
+				percent_change_24h: coinData.percent_change_24h ?? undefined,
+			};
 
-        if (!fallbackCoin) {
-          throw new Error(`No data available for ${symbol}`);
-        }
+			// STEP 2: GENERATE REAL AI PREDICTION
+			console.log(
+				`🤖 STEP 2: Generating REAL AI prediction with Gemini for ${symbol}`
+			);
+			const aiPrediction = await this.generateRealAIPrediction(
+				symbol,
+				socialMetrics
+			);
+			geminiStatus = 'REAL';
 
-        return this.createFallbackAnalysis(symbol, fallbackCoin);
-      }
+			const result: PredictionData = {
+				symbol: symbol.toUpperCase(),
+				current_price: coinData.price ?? 0,
+				social_metrics: socialMetrics,
+				ai_prediction: aiPrediction,
+				timestamp: new Date().toISOString(),
+				data_sources: {
+					lunarcrush_api: lunarcrushStatus,
+					gemini_ai: geminiStatus,
+				},
+			};
 
-      console.log(`📊 Analyzing ${symbol} via SDK`);
+			console.log(`🎉 SUCCESS: Complete REAL analysis generated for ${symbol}`);
+			return result;
+		} catch (error) {
+			console.error(`❌ REAL DATA ANALYSIS FAILED for ${symbol}:`, error);
+			const errorMessage = getErrorMessage(error);
+			throw new Error(
+				`Analysis failed with REAL APIs: ${errorMessage} - NO MOCK DATA PROVIDED`
+			);
+		}
+	}
 
-      const coinsList = await this.lunarcrush.coins.list();
+	/**
+	 * Generate REAL AI prediction - NO FALLBACKS
+	 */
+	private async generateRealAIPrediction(
+		symbol: string,
+		metrics: SocialMetrics
+	): Promise<any> {
+		const currentPrice = metrics.price ?? 0;
 
-      if (!coinsList || !Array.isArray(coinsList)) {
-        throw new Error(`Failed to fetch coins list`);
-      }
+		if (currentPrice === 0) {
+			throw new Error(
+				`Cannot generate AI prediction: No real price data for ${symbol}`
+			);
+		}
 
-      const coinData = coinsList.find((coin: any) =>
-        coin.symbol?.toLowerCase() === symbol.toLowerCase()
-      );
+		const prompt = `
+REAL CRYPTO ANALYSIS REQUEST for ${symbol}
 
-      if (!coinData) {
-        const fallbackCoin = this.getFallbackCryptos().find(coin =>
-          coin.symbol.toLowerCase() === symbol.toLowerCase()
-        );
+REAL LUNARCRUSH SOCIAL DATA:
+- Galaxy Score: ${metrics.galaxy_score}/100 (social intelligence)
+- AltRank: ${metrics.alt_rank} (lower = better ranking)
+- Social Volume 24h: ${metrics.social_volume_24h} posts
+- Interactions 24h: ${metrics.interactions_24h}
+- Sentiment: ${metrics.sentiment}/5 (social sentiment score)
+- Social Dominance: ${metrics.social_dominance}%
+- Current Price: $${currentPrice}
+- 24h Change: ${metrics.percent_change_24h}%
+- Market Cap: $${metrics.market_cap}
 
-        if (!fallbackCoin) {
-          throw new Error(`No data found for ${symbol}`);
-        }
+Generate a REAL investment analysis based on this ACTUAL data. Respond with valid JSON:
 
-        return this.createFallbackAnalysis(symbol, fallbackCoin);
-      }
-
-      const socialMetrics: SocialMetrics = {
-        galaxy_score: coinData.galaxy_score ?? 50,
-        alt_rank: coinData.alt_rank ?? 999,
-        social_volume_24h: coinData.social_volume_24h ?? 0,
-        interactions_24h: coinData.interactions_24h ?? 0,
-        sentiment: coinData.sentiment ?? 2.5,
-        social_dominance: coinData.social_dominance ?? 0,
-        market_cap: coinData.market_cap ?? undefined,
-        price: coinData.price ?? undefined,
-        volume_24h: coinData.volume_24h ?? undefined,
-        percent_change_24h: coinData.percent_change_24h ?? undefined
-      };
-
-      const aiPrediction = await this.generateAIPrediction(symbol, socialMetrics);
-
-      return {
-        symbol: symbol.toUpperCase(),
-        current_price: coinData.price ?? 0,
-        social_metrics: socialMetrics,
-        ai_prediction: aiPrediction,
-        timestamp: new Date().toISOString()
-      };
-    } catch (error) {
-      console.error(`❌ Error analyzing ${symbol}:`, error);
-
-      const fallbackCoin = this.getFallbackCryptos().find(coin =>
-        coin.symbol.toLowerCase() === symbol.toLowerCase()
-      );
-
-      if (fallbackCoin) {
-        return this.createFallbackAnalysis(symbol, fallbackCoin);
-      }
-
-      throw new Error(`Failed to analyze ${symbol}: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
-
-  /**
-   * Generate AI prediction
-   */
-  private async generateAIPrediction(symbol: string, metrics: SocialMetrics): Promise<any> {
-    try {
-      if (!this.model) {
-        return this.createFallbackPrediction(metrics);
-      }
-
-      const currentPrice = metrics.price ?? 0;
-
-      const prompt = `Analyze ${symbol}: Galaxy Score ${metrics.galaxy_score}/100, AltRank ${metrics.alt_rank}, Price $${currentPrice}. Return JSON: {"price_target_24h": number, "price_target_7d": number, "confidence_score": 0-100, "risk_level": "LOW|MEDIUM|HIGH", "reasoning": "text", "position_size_recommendation": 1-10}`;
-
-      const result = await this.model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        return this.createFallbackPrediction(metrics);
-      }
-
-      const prediction = JSON.parse(jsonMatch[0]);
-
-      const fallbackPrice24h = currentPrice > 0 ? currentPrice * 1.02 : 0;
-      const fallbackPrice7d = currentPrice > 0 ? currentPrice * 1.05 : 0;
-
-      return {
-        price_target_24h: Number(prediction.price_target_24h) || fallbackPrice24h,
-        price_target_7d: Number(prediction.price_target_7d) || fallbackPrice7d,
-        confidence_score: Math.min(100, Math.max(0, Number(prediction.confidence_score) || 65)),
-        risk_level: ['LOW', 'MEDIUM', 'HIGH'].includes(prediction.risk_level) ? prediction.risk_level : 'MEDIUM',
-        reasoning: prediction.reasoning || 'Analysis based on social sentiment and market data',
-        position_size_recommendation: Math.min(10, Math.max(1, Number(prediction.position_size_recommendation) || 5))
-      };
-    } catch (error) {
-      console.error('❌ Error generating AI prediction:', error);
-      return this.createFallbackPrediction(metrics);
-    }
-  }
-
-  private createFallbackPrediction(metrics: SocialMetrics): any {
-    const currentPrice = metrics.price ?? 0;
-    const confidence = Math.min(90, metrics.galaxy_score || 50);
-    const risk = metrics.galaxy_score > 70 ? 'LOW' : metrics.galaxy_score > 40 ? 'MEDIUM' : 'HIGH';
-
-    const fallbackPrice24h = currentPrice > 0 ? currentPrice * (1 + (confidence - 50) / 1000) : 0;
-    const fallbackPrice7d = currentPrice > 0 ? currentPrice * (1 + (confidence - 50) / 500) : 0;
-
-    return {
-      price_target_24h: fallbackPrice24h,
-      price_target_7d: fallbackPrice7d,
-      confidence_score: confidence,
-      risk_level: risk,
-      reasoning: `Analysis based on Galaxy Score of ${metrics.galaxy_score} and social sentiment data`,
-      position_size_recommendation: risk === 'LOW' ? 7 : risk === 'MEDIUM' ? 5 : 3
-    };
-  }
-
-  private createFallbackAnalysis(symbol: string, fallbackCoin: CryptoSearchResult): PredictionData {
-    const socialMetrics: SocialMetrics = {
-      galaxy_score: fallbackCoin.galaxy_score ?? 50,
-      alt_rank: 500,
-      social_volume_24h: 1000,
-      interactions_24h: 500,
-      sentiment: 2.5,
-      social_dominance: 1.0,
-      market_cap: fallbackCoin.market_cap,
-      price: fallbackCoin.current_price,
-      volume_24h: undefined,
-      percent_change_24h: undefined
-    };
-
-    const aiPrediction = this.createFallbackPrediction(socialMetrics);
-
-    return {
-      symbol: symbol.toUpperCase(),
-      current_price: fallbackCoin.current_price ?? 0,
-      social_metrics: socialMetrics,
-      ai_prediction: aiPrediction,
-      timestamp: new Date().toISOString()
-    };
-  }
-
-  async getPopularCryptos(): Promise<CryptoSearchResult[]> {
-    try {
-      await this.initializeServices();
-
-      if (!this.lunarcrush) {
-        return this.getFallbackCryptos();
-      }
-
-      const coinsList = await this.lunarcrush.coins.list();
-
-      if (!coinsList || !Array.isArray(coinsList)) {
-        return this.getFallbackCryptos();
-      }
-
-      return coinsList.slice(0, 12).map((crypto: any) => ({
-        symbol: crypto.symbol || '',
-        name: crypto.name || '',
-        current_price: crypto.price ?? undefined,
-        market_cap: crypto.market_cap ?? undefined,
-        galaxy_score: crypto.galaxy_score ?? undefined
-      }));
-    } catch (error) {
-      console.error('❌ Error getting popular cryptos:', error);
-      return this.getFallbackCryptos();
-    }
-  }
-
-  private getFallbackCryptos(): CryptoSearchResult[] {
-    return [
-      { symbol: 'BTC', name: 'Bitcoin', current_price: 45000, galaxy_score: 85 },
-      { symbol: 'ETH', name: 'Ethereum', current_price: 2800, galaxy_score: 80 },
-      { symbol: 'SOL', name: 'Solana', current_price: 110, galaxy_score: 75 },
-      { symbol: 'ADA', name: 'Cardano', current_price: 0.45, galaxy_score: 60 },
-      { symbol: 'DOT', name: 'Polkadot', current_price: 8.50, galaxy_score: 55 },
-      { symbol: 'MATIC', name: 'Polygon', current_price: 0.85, galaxy_score: 65 }
-    ];
-  }
+{
+  "price_target_24h": <realistic_number>,
+  "price_target_7d": <realistic_number>,
+  "confidence_score": <0-100_integer>,
+  "risk_level": "<LOW|MEDIUM|HIGH>",
+  "reasoning": "<detailed_analysis_of_real_data>",
+  "position_size_recommendation": <1-10_integer>
 }
 
+Base your analysis on the REAL social sentiment and market data provided above.
+`;
+
+		try {
+			console.log(
+				`🤖 REAL AI REQUEST: Sending to Gemini with real data for ${symbol}`
+			);
+			const result = await this.model.generateContent(prompt);
+			const response = await result.response;
+			const text = response.text();
+
+			console.log(
+				`🤖 REAL AI RESPONSE received for ${symbol} (length: ${text.length})`
+			);
+
+			// Parse REAL AI response
+			const jsonMatch = text.match(/\{[\s\S]*\}/);
+			if (!jsonMatch) {
+				throw new Error(
+					'Gemini AI returned invalid JSON format - cannot parse real prediction'
+				);
+			}
+
+			const prediction = JSON.parse(jsonMatch[0]);
+			console.log(`✅ REAL AI PREDICTION parsed for ${symbol}:`, prediction);
+
+			// Validate but DON'T provide fallbacks - REAL DATA ONLY
+			if (!prediction.price_target_24h || !prediction.reasoning) {
+				throw new Error(
+					'Gemini AI prediction missing required fields - REAL prediction failed'
+				);
+			}
+
+			return {
+				price_target_24h: Number(prediction.price_target_24h),
+				price_target_7d: Number(prediction.price_target_7d),
+				confidence_score: Math.min(
+					100,
+					Math.max(0, Number(prediction.confidence_score))
+				),
+				risk_level: ['LOW', 'MEDIUM', 'HIGH'].includes(prediction.risk_level)
+					? prediction.risk_level
+					: 'MEDIUM',
+				reasoning: prediction.reasoning,
+				position_size_recommendation: Math.min(
+					10,
+					Math.max(1, Number(prediction.position_size_recommendation))
+				),
+			};
+		} catch (error) {
+			console.error(`❌ REAL AI PREDICTION FAILED for ${symbol}:`, error);
+			const errorMessage = getErrorMessage(error);
+			throw new Error(
+				`Gemini AI prediction failed: ${errorMessage} - NO FALLBACK PREDICTION`
+			);
+		}
+	}
+
+	/**
+	 * Get popular cryptos - REAL DATA ONLY
+	 */
+	async getPopularCryptos(): Promise<CryptoSearchResult[]> {
+		console.log(
+			`🔥 REAL API CALL: Getting popular cryptocurrencies from LunarCrush`
+		);
+
+		try {
+			const coinsList = await this.lunarcrush.coins.list();
+			console.log(
+				`✅ REAL DATA: Received ${
+					coinsList?.length || 0
+				} coins for popular list`
+			);
+
+			if (!coinsList || !Array.isArray(coinsList)) {
+				throw new Error(
+					'LunarCrush popular coins API failed - REAL DATA REQUIRED'
+				);
+			}
+
+			return coinsList.slice(0, 12).map((crypto: any) => ({
+				symbol: crypto.symbol || '',
+				name: crypto.name || '',
+				current_price: crypto.price ?? undefined,
+				market_cap: crypto.market_cap ?? undefined,
+				galaxy_score: crypto.galaxy_score ?? undefined,
+			}));
+		} catch (error) {
+			console.error('❌ REAL POPULAR CRYPTOS FAILED:', error);
+			const errorMessage = getErrorMessage(error);
+			throw new Error(
+				`Failed to get real popular crypto data: ${errorMessage}`
+			);
+		}
+	}
+}
+
+// Export singleton - REAL DATA ONLY
 export const lunarCrushEnhanced = new LunarCrushEnhancedService();
 export { LunarCrushEnhancedService };

@@ -1,7 +1,0 @@
-{
-  "env_file_found": ".env.local",
-  "lunarcrush_key_present": true,
-  "gemini_key_present": true,
-  "environment_set": false,
-  "total_env_vars": 3
-}

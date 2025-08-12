@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Brain, Zap, TrendingUp, Loader2, AlertCircle } from 'lucide-react';
+import { Brain, Zap, TrendingUp, Loader2, AlertCircle, CheckCircle, Database } from 'lucide-react';
 import CoinSearch from '@/components/crypto/CoinSearch';
 import PredictionCard from '@/components/crypto/PredictionCard';
-import Loading from '@/components/shared/Loading';
 import { lunarCrushEnhanced, CryptoSearchResult, PredictionData } from '@/lib/lunarcrush-enhanced';
 
 type ViewState = 'search' | 'analyzing' | 'prediction';
@@ -13,30 +12,27 @@ export default function MainDashboard() {
   const [currentView, setCurrentView] = useState<ViewState>('search');
   const [selectedCoin, setSelectedCoin] = useState<CryptoSearchResult | null>(null);
   const [predictionData, setPredictionData] = useState<PredictionData | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleCoinSelect = async (coin: CryptoSearchResult) => {
     try {
       setSelectedCoin(coin);
       setCurrentView('analyzing');
-      setIsAnalyzing(true);
       setError(null);
 
-      console.log(`🔮 Analyzing ${coin.symbol}...`);
+      console.log(`🔮 REAL ANALYSIS STARTING: ${coin.symbol}`);
 
-      // Get comprehensive analysis from LunarCrush + AI
+      // Get REAL analysis - NO FALLBACKS
       const analysis = await lunarCrushEnhanced.getCryptoAnalysis(coin.symbol);
+      console.log(`✅ REAL ANALYSIS COMPLETE:`, analysis.data_sources);
 
       setPredictionData(analysis);
       setCurrentView('prediction');
     } catch (err) {
-      console.error('Error analyzing coin:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to analyze cryptocurrency';
-      setError(errorMessage);
+      console.error('❌ REAL ANALYSIS FAILED:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Real analysis failed - no mock data available';
+      setError(`REAL DATA ERROR: ${errorMessage}`);
       setCurrentView('search');
-    } finally {
-      setIsAnalyzing(false);
     }
   };
 
@@ -56,7 +52,7 @@ export default function MainDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-8">
 
-        {/* Header */}
+        {/* Header with Real Data Indicators */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <div className="p-3 bg-blue-500/20 rounded-xl">
@@ -66,33 +62,39 @@ export default function MainDashboard() {
               LunarOracle
             </h1>
           </div>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-4">
             AI-powered cryptocurrency predictions using real-time social sentiment analysis
           </p>
-          <div className="flex items-center justify-center space-x-4 mt-4">
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
-              <Zap className="h-4 w-4 text-yellow-400" />
-              <span>Real-time LunarCrush Data</span>
+
+          {/* REAL DATA INDICATORS */}
+          <div className="flex items-center justify-center space-x-6 mt-6">
+            <div className="flex items-center space-x-2 px-3 py-1 bg-green-500/20 rounded-full border border-green-500/30">
+              <CheckCircle className="h-4 w-4 text-green-400" />
+              <span className="text-sm text-green-300">REAL LunarCrush API</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <div className="flex items-center space-x-2 px-3 py-1 bg-blue-500/20 rounded-full border border-blue-500/30">
               <Brain className="h-4 w-4 text-blue-400" />
-              <span>AI-Powered Analysis</span>
+              <span className="text-sm text-blue-300">REAL Gemini AI</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
-              <TrendingUp className="h-4 w-4 text-green-400" />
-              <span>Social Sentiment</span>
+            <div className="flex items-center space-x-2 px-3 py-1 bg-red-500/20 rounded-full border border-red-500/30">
+              <Database className="h-4 w-4 text-red-400" />
+              <span className="text-sm text-red-300">NO MOCK DATA</span>
             </div>
           </div>
         </div>
 
-        {/* Error Display */}
+        {/* Error Display - Real Data Failures */}
         {error && (
           <div className="max-w-2xl mx-auto mb-8">
             <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 backdrop-blur-sm">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 mb-2">
                 <AlertCircle className="h-5 w-5 text-red-400" />
-                <span className="text-red-300">{error}</span>
+                <span className="font-medium text-red-300">REAL API ERROR</span>
               </div>
+              <p className="text-red-200 text-sm mb-2">{error}</p>
+              <p className="text-red-200 text-xs">
+                This application only uses real data. If APIs fail, we show errors instead of fake data.
+              </p>
               <button
                 onClick={handleBackToSearch}
                 className="mt-2 text-sm text-red-300 hover:text-red-200 underline"
@@ -109,19 +111,20 @@ export default function MainDashboard() {
           {/* Search View */}
           {currentView === 'search' && (
             <div className="space-y-8">
-
-              {/* Search Component */}
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-white mb-6">
+                <h2 className="text-2xl font-semibold text-white mb-2">
                   Search Any Cryptocurrency
                 </h2>
+                <p className="text-gray-400 text-sm mb-6">
+                  🔥 Uses REAL LunarCrush data - No mock/fallback data
+                </p>
                 <CoinSearch onCoinSelect={handleCoinSelect} />
               </div>
 
               {/* Quick Analysis Buttons */}
               <div className="text-center">
                 <h3 className="text-lg font-medium text-gray-300 mb-4">
-                  Quick Analysis
+                  Quick Real Analysis
                 </h3>
                 <div className="flex flex-wrap justify-center gap-4">
                   {['BTC', 'ETH', 'SOL', 'ADA', 'DOT', 'MATIC'].map((symbol) => (
@@ -137,10 +140,14 @@ export default function MainDashboard() {
                       <div className="flex items-center space-x-2">
                         <Brain className="h-4 w-4" />
                         <span>Analyze {symbol}</span>
+                        <CheckCircle className="h-3 w-3 text-green-400" />
                       </div>
                     </button>
                   ))}
                 </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  ✅ All analysis uses real LunarCrush + Gemini AI data
+                </p>
               </div>
 
               {/* Feature Highlights */}
@@ -149,9 +156,9 @@ export default function MainDashboard() {
                   <div className="p-3 bg-blue-500/20 rounded-lg w-fit mx-auto mb-4">
                     <Brain className="h-6 w-6 text-blue-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">AI Predictions</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">Real AI Predictions</h3>
                   <p className="text-gray-400 text-sm">
-                    Advanced AI analysis combining social sentiment with technical indicators
+                    Actual Gemini AI analysis - no mock responses
                   </p>
                 </div>
 
@@ -161,7 +168,7 @@ export default function MainDashboard() {
                   </div>
                   <h3 className="text-lg font-semibold text-white mb-2">Real-time Data</h3>
                   <p className="text-gray-400 text-sm">
-                    Live social metrics from LunarCrush including Galaxy Score and sentiment
+                    Live LunarCrush social metrics - no fallback data
                   </p>
                 </div>
 
@@ -169,9 +176,9 @@ export default function MainDashboard() {
                   <div className="p-3 bg-green-500/20 rounded-lg w-fit mx-auto mb-4">
                     <TrendingUp className="h-6 w-6 text-green-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Smart Insights</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">No Mock Data</h3>
                   <p className="text-gray-400 text-sm">
-                    Position sizing recommendations and risk assessment for informed decisions
+                    100% real API responses or clear error messages
                   </p>
                 </div>
               </div>
@@ -190,24 +197,24 @@ export default function MainDashboard() {
                   </div>
 
                   <h2 className="text-xl font-semibold text-white mb-2">
-                    Analyzing {selectedCoin?.symbol}
+                    Analyzing {selectedCoin?.symbol} with REAL APIs
                   </h2>
                   <p className="text-gray-400 mb-6">
-                    Gathering real-time data and generating AI predictions...
+                    Fetching live data and generating real AI predictions...
                   </p>
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Fetching LunarCrush data</span>
+                      <span className="text-gray-400">🔥 Fetching REAL LunarCrush data</span>
                       <Loader2 className="h-4 w-4 text-blue-400 animate-spin" />
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Analyzing social sentiment</span>
-                      <Loader2 className="h-4 w-4 text-yellow-400 animate-spin" />
+                      <span className="text-gray-400">🤖 Generating REAL AI prediction</span>
+                      <Loader2 className="h-4 w-4 text-green-400 animate-spin" />
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Generating AI predictions</span>
-                      <Loader2 className="h-4 w-4 text-green-400 animate-spin" />
+                      <span className="text-gray-400">❌ NO fallback/mock data</span>
+                      <CheckCircle className="h-4 w-4 text-red-400" />
                     </div>
                   </div>
                 </div>
@@ -226,6 +233,26 @@ export default function MainDashboard() {
                 >
                   <span>← Back to Search</span>
                 </button>
+
+                {/* Data Source Verification */}
+                <div className="flex items-center justify-center space-x-4 mb-4">
+                  <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${
+                    predictionData.data_sources.lunarcrush_api === 'REAL'
+                      ? 'bg-green-500/20 text-green-400'
+                      : 'bg-red-500/20 text-red-400'
+                  }`}>
+                    <CheckCircle className="h-3 w-3" />
+                    <span>LunarCrush: {predictionData.data_sources.lunarcrush_api}</span>
+                  </div>
+                  <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${
+                    predictionData.data_sources.gemini_ai === 'REAL'
+                      ? 'bg-green-500/20 text-green-400'
+                      : 'bg-red-500/20 text-red-400'
+                  }`}>
+                    <Brain className="h-3 w-3" />
+                    <span>Gemini AI: {predictionData.data_sources.gemini_ai}</span>
+                  </div>
+                </div>
               </div>
 
               <PredictionCard
@@ -241,7 +268,7 @@ export default function MainDashboard() {
                            hover:from-blue-700 hover:to-purple-700
                            transform hover:scale-105 transition-all duration-200"
                 >
-                  Analyze Another Coin
+                  Analyze Another Coin (Real Data)
                 </button>
               </div>
             </div>
@@ -250,7 +277,7 @@ export default function MainDashboard() {
 
         {/* Footer */}
         <div className="text-center mt-16 text-gray-500 text-sm">
-          <p>Powered by LunarCrush social intelligence and advanced AI analysis</p>
+          <p>🔥 Powered by REAL LunarCrush API and Gemini AI - No mock data</p>
         </div>
       </div>
     </div>
