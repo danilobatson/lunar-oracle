@@ -1,0 +1,14 @@
+=== LunarCrush SDK Exploration ===
+LunarCrushSDK: object
+LunarCrushSDK keys: [
+  'LunarCrush',
+  'LunarCrushError',
+  'LunarCrushMCP',
+  'MCPError',
+  'createLunarCrush',
+  'createLunarCrushMCP',
+  'default'
+]
+Error with apiKey: LunarCrushSDK is not a constructor
+Error with api_key: LunarCrushSDK is not a constructor
+Error direct call: LunarCrushSDK is not a function

@@ -1,19 +1,6 @@
 import type { Metadata } from 'next';
-import './globals.css';
 
 export const metadata: Metadata = {
   title: 'LunarOracle - Crypto Intelligence Platform',
   description: 'AI-powered crypto predictions with social sentiment analysis',
 };
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
-}
