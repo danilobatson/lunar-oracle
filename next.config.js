@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // CORS headers for API access
+  // Basic CORS for API access
   async headers() {
     return [
       {
@@ -23,28 +23,15 @@ const nextConfig = {
     ]
   },
 
-  // Optimize for Vercel deployment
-  output: 'standalone',
-
-  // Ensure environment variables work properly
-  env: {
-    NEXT_PUBLIC_LUNARCRUSH_API_KEY: process.env.NEXT_PUBLIC_LUNARCRUSH_API_KEY,
-    NEXT_PUBLIC_GEMINI_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY,
-  },
-
-  // Production optimizations
+  // Minimal Vercel optimizations
   poweredByHeader: false,
-  compress: true,
-
-  // Vercel-specific settings
   trailingSlash: false,
 
-  // Ensure TypeScript builds properly
+  // Ensure build works
   typescript: {
     ignoreBuildErrors: false,
   },
 
-  // ESLint configuration for deployment
   eslint: {
     ignoreDuringBuilds: false,
   },

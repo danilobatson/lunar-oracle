@@ -1,17 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "yarn build",
-  "outputDirectory": ".next",
-  "installCommand": "yarn install",
   "framework": "nextjs",
-  "functions": {
-    "app/**/*.{js,ts,tsx}": {
-      "maxDuration": 30
-    }
-  },
-  "crons": [],
-  "env": {
-    "NEXT_PUBLIC_LUNARCRUSH_API_KEY": "@lunarcrush-api-key",
-    "NEXT_PUBLIC_GEMINI_API_KEY": "@gemini-api-key"
-  }
+  "buildCommand": "yarn build",
+  "installCommand": "yarn install --frozen-lockfile"
 }
