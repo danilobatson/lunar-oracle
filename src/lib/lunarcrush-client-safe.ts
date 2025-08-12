@@ -19,7 +19,7 @@ interface CoinData {
 
 class ClientSafeLunarCrush {
   private apiKey: string;
-  private endpoint = 'https://lunarcrush.cryptoguard-api.workers.dev/graphql'\;
+  private endpoint = 'https://lunarcrush.cryptoguard-api.workers.dev/graphql';
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -41,7 +41,7 @@ class ClientSafeLunarCrush {
       }
 
       const result = await response.json();
-      
+
       if (result.errors) {
         throw new Error(result.errors[0].message);
       }
