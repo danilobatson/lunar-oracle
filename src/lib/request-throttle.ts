@@ -1,9 +1,15 @@
 // Request Throttling Service - Prevents Worker CPU Exhaustion
 // This prevents rapid requests from overwhelming the Cloudflare Worker
 
+interface QueuedRequest<T = any> {
+  resolve: (value: T) => void;
+  reject: (reason?: any) => void;
+  timestamp: number;
+}
+
 class RequestThrottleService {
   private pendingRequests = new Map<string, Promise<any>>();
-  private requestQueue = new Map<string, { resolve: Function; reject: Function; timestamp: number }[]>();
+  private requestQueue = new Map<string, QueuedRequest[]>();
   private lastRequestTime = new Map<string, number>();
   private readonly MIN_REQUEST_INTERVAL = 2000; // 2 seconds between requests per endpoint
   private readonly MAX_CONCURRENT_REQUESTS = 2; // Max concurrent requests per endpoint
@@ -66,7 +72,7 @@ class RequestThrottleService {
     if (timeSinceLastRequest < this.MIN_REQUEST_INTERVAL) {
       const waitTime = this.MIN_REQUEST_INTERVAL - timeSinceLastRequest;
       console.log(`⏱️ Throttling ${requestKey}: waiting ${waitTime}ms`);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      await new Promise<void>(resolve => setTimeout(resolve, waitTime));
     }
 
     // Create the actual request promise
