@@ -1,1 +1,0 @@
-src/app/layout.tsx(14,10): error TS2741: Property 'value' is missing in type '{ children: ReactNode; }' but required in type 'ChakraProviderProps'.

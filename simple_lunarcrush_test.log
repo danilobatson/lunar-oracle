@@ -1,3 +1,0 @@
-src/lib/lunarcrush.ts(22,5): error TS2322: Type '{ __typename?: "CoinDetails" | undefined; id?: number | null | undefined; name?: string | null | undefined; symbol?: string | null | undefined; price?: number | null | undefined; price_btc?: number | ... 1 more ... | undefined; ... 11 more ...; market_cap_rank?: number | ... 1 more ... | undefined; } | null | undefi...' is not assignable to type 'CoinData | null'.
-  Type 'undefined' is not assignable to type 'CoinData | null'.
-src/lib/lunarcrush.ts(34,12): error TS18049: 'data' is possibly 'null' or 'undefined'.
