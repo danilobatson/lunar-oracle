@@ -1,167 +1,258 @@
 'use client';
+
 import React, { useState } from 'react';
-import ErrorBoundary from '../shared/ErrorBoundary';
-import Loading from '../shared/Loading';
+import { Brain, Zap, TrendingUp, Loader2, AlertCircle } from 'lucide-react';
+import CoinSearch from '@/components/crypto/CoinSearch';
+import PredictionCard from '@/components/crypto/PredictionCard';
+import Loading from '@/components/shared/Loading';
+import { lunarCrushEnhanced, CryptoSearchResult, PredictionData } from '@/lib/lunarcrush-enhanced';
+
+type ViewState = 'search' | 'analyzing' | 'prediction';
 
 export default function MainDashboard() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [currentView, setCurrentView] = useState<ViewState>('search');
+  const [selectedCoin, setSelectedCoin] = useState<CryptoSearchResult | null>(null);
+  const [predictionData, setPredictionData] = useState<PredictionData | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleAnalyze = (crypto: string) => {
-    setIsLoading(true);
-    console.log(`Analyzing ${crypto}...`);
-    // Simulate API call - we'll connect real APIs in Phase 2
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log(`${crypto} analysis complete`);
-    }, 2000);
+  const handleCoinSelect = async (coin: CryptoSearchResult) => {
+    try {
+      setSelectedCoin(coin);
+      setCurrentView('analyzing');
+      setIsAnalyzing(true);
+      setError(null);
+
+      console.log(`🔮 Analyzing ${coin.symbol}...`);
+
+      // Get comprehensive analysis from LunarCrush + AI
+      const analysis = await lunarCrushEnhanced.getCryptoAnalysis(coin.symbol);
+
+      setPredictionData(analysis);
+      setCurrentView('prediction');
+    } catch (err) {
+      console.error('Error analyzing coin:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to analyze cryptocurrency';
+      setError(errorMessage);
+      setCurrentView('search');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleBackToSearch = () => {
+    setCurrentView('search');
+    setSelectedCoin(null);
+    setPredictionData(null);
+    setError(null);
+  };
+
+  const handleQuickAnalyze = async (symbol: string) => {
+    const quickCoin: CryptoSearchResult = { symbol, name: symbol };
+    await handleCoinSelect(quickCoin);
   };
 
   return (
-    <ErrorBoundary>
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold text-white mb-4">
-              🌙 LunarOracle
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <div className="container mx-auto px-4 py-8">
+
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="p-3 bg-blue-500/20 rounded-xl">
+              <Brain className="h-8 w-8 text-blue-400" />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-white">
+              LunarOracle
             </h1>
-            <p className="text-xl text-purple-200 mb-8">
-              Crypto Intelligence Platform - Ready for Creator.bid Demo
-            </p>
-
-            {/* Status Indicators */}
-            <div className="bg-green-900/30 border border-green-500 rounded-lg p-6 max-w-2xl mx-auto">
-              <div className="flex items-center justify-center space-x-2 mb-4">
-                <span className="text-green-400">✅</span>
-                <span className="text-green-300 font-semibold">Ready for Demo</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-green-200">
-                <div>• TypeScript compilation successful</div>
-                <div>• LunarCrush SDK integrated with real schema</div>
-                <div>• Gemini AI predictions working</div>
-                <div>• Professional UI with real market data</div>
-              </div>
-            </div>
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            <button
-              onClick={() => handleAnalyze('Bitcoin')}
-              disabled={isLoading}
-              className="px-8 py-4 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 disabled:transform-none"
-            >
-              ANALYZE BITCOIN
-            </button>
-            <button
-              onClick={() => handleAnalyze('Ethereum')}
-              disabled={isLoading}
-              className="px-8 py-4 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 disabled:transform-none"
-            >
-              ANALYZE ETHEREUM
-            </button>
-            <button
-              onClick={() => handleAnalyze('Solana')}
-              disabled={isLoading}
-              className="px-8 py-4 bg-purple-500 hover:bg-purple-600 disabled:bg-purple-300 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 disabled:transform-none"
-            >
-              ANALYZE SOLANA
-            </button>
-          </div>
-
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Prediction Engine Card */}
-            <div className="lg:col-span-2 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                🔮 Prediction Engine
-              </h2>
-              {isLoading ? (
-                <Loading message="Generating AI prediction with LunarCrush data..." />
-              ) : (
-                <div className="text-gray-300">
-                  <p className="mb-4">
-                    Advanced AI predictions powered by LunarCrush social sentiment data and Gemini AI analysis.
-                  </p>
-                  <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4">
-                    <p className="text-blue-200 text-sm">
-                      🚀 <strong>Next Phase:</strong> Real-time prediction cards with position sizing,
-                      risk analysis, and social intelligence features.
-                    </p>
-                  </div>
-                </div>
-              )}
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            AI-powered cryptocurrency predictions using real-time social sentiment analysis
+          </p>
+          <div className="flex items-center justify-center space-x-4 mt-4">
+            <div className="flex items-center space-x-2 text-sm text-gray-400">
+              <Zap className="h-4 w-4 text-yellow-400" />
+              <span>Real-time LunarCrush Data</span>
             </div>
-
-            {/* Quick Actions Card */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
-              <h2 className="text-xl font-bold text-white mb-4 flex items-center">
-                ⚡ Quick Actions
-              </h2>
-              <div className="space-y-3">
-                <button className="w-full px-4 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-left transition-colors">
-                  📊 Market Overview
-                </button>
-                <button className="w-full px-4 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-left transition-colors">
-                  📈 Top Movers
-                </button>
-                <button className="w-full px-4 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-left transition-colors">
-                  🎯 My Watchlist
-                </button>
-                <button className="w-full px-4 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-left transition-colors">
-                  ⚠️ Risk Alerts
-                </button>
-              </div>
+            <div className="flex items-center space-x-2 text-sm text-gray-400">
+              <Brain className="h-4 w-4 text-blue-400" />
+              <span>AI-Powered Analysis</span>
             </div>
-
-            {/* Social Intelligence Card */}
-            <div className="lg:col-span-3 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                📡 Social Intelligence Radar
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-400 mb-2">127K</div>
-                  <div className="text-gray-300 text-sm">Social Mentions (24h)</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-400 mb-2">73.2</div>
-                  <div className="text-gray-300 text-sm">Galaxy Score</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-400 mb-2">#23</div>
-                  <div className="text-gray-300 text-sm">AltRank</div>
-                </div>
-              </div>
-              <div className="mt-6 bg-yellow-900/30 border border-yellow-500 rounded-lg p-4">
-                <p className="text-yellow-200 text-sm">
-                  🎯 <strong>Competitive Advantage:</strong> Exclusive access to LunarCrush's institutional-grade
-                  social intelligence. While others guess, we know what's happening in the social layer that drives crypto prices.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Phase Development Status */}
-          <div className="mt-12 bg-gray-800/30 border border-gray-600 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-white mb-4">🏗️ Development Progress</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="bg-green-900/40 border border-green-600 rounded-lg p-3">
-                <div className="text-green-300 font-semibold mb-1">✅ Phase 1: Foundation</div>
-                <div className="text-green-200">UI Framework & Layout</div>
-              </div>
-              <div className="bg-blue-900/40 border border-blue-600 rounded-lg p-3">
-                <div className="text-blue-300 font-semibold mb-1">🚧 Phase 2: Core Engine</div>
-                <div className="text-blue-200">Prediction Cards & Search</div>
-              </div>
-              <div className="bg-gray-700/40 border border-gray-500 rounded-lg p-3">
-                <div className="text-gray-300 font-semibold mb-1">⏳ Phase 3: Intelligence</div>
-                <div className="text-gray-400">Social Features & Analysis</div>
-              </div>
+            <div className="flex items-center space-x-2 text-sm text-gray-400">
+              <TrendingUp className="h-4 w-4 text-green-400" />
+              <span>Social Sentiment</span>
             </div>
           </div>
         </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 backdrop-blur-sm">
+              <div className="flex items-center space-x-2">
+                <AlertCircle className="h-5 w-5 text-red-400" />
+                <span className="text-red-300">{error}</span>
+              </div>
+              <button
+                onClick={handleBackToSearch}
+                className="mt-2 text-sm text-red-300 hover:text-red-200 underline"
+              >
+                Try another search
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Main Content Area */}
+        <div className="max-w-4xl mx-auto">
+
+          {/* Search View */}
+          {currentView === 'search' && (
+            <div className="space-y-8">
+
+              {/* Search Component */}
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-white mb-6">
+                  Search Any Cryptocurrency
+                </h2>
+                <CoinSearch onCoinSelect={handleCoinSelect} />
+              </div>
+
+              {/* Quick Analysis Buttons */}
+              <div className="text-center">
+                <h3 className="text-lg font-medium text-gray-300 mb-4">
+                  Quick Analysis
+                </h3>
+                <div className="flex flex-wrap justify-center gap-4">
+                  {['BTC', 'ETH', 'SOL', 'ADA', 'DOT', 'MATIC'].map((symbol) => (
+                    <button
+                      key={symbol}
+                      onClick={() => handleQuickAnalyze(symbol)}
+                      className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600
+                                 text-white font-medium rounded-lg shadow-lg
+                                 hover:from-blue-700 hover:to-purple-700
+                                 transform hover:scale-105 transition-all duration-200
+                                 border border-blue-500/30"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <Brain className="h-4 w-4" />
+                        <span>Analyze {symbol}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Feature Highlights */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                <div className="text-center p-6 bg-gray-800/30 rounded-xl border border-gray-700">
+                  <div className="p-3 bg-blue-500/20 rounded-lg w-fit mx-auto mb-4">
+                    <Brain className="h-6 w-6 text-blue-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">AI Predictions</h3>
+                  <p className="text-gray-400 text-sm">
+                    Advanced AI analysis combining social sentiment with technical indicators
+                  </p>
+                </div>
+
+                <div className="text-center p-6 bg-gray-800/30 rounded-xl border border-gray-700">
+                  <div className="p-3 bg-yellow-500/20 rounded-lg w-fit mx-auto mb-4">
+                    <Zap className="h-6 w-6 text-yellow-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Real-time Data</h3>
+                  <p className="text-gray-400 text-sm">
+                    Live social metrics from LunarCrush including Galaxy Score and sentiment
+                  </p>
+                </div>
+
+                <div className="text-center p-6 bg-gray-800/30 rounded-xl border border-gray-700">
+                  <div className="p-3 bg-green-500/20 rounded-lg w-fit mx-auto mb-4">
+                    <TrendingUp className="h-6 w-6 text-green-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Smart Insights</h3>
+                  <p className="text-gray-400 text-sm">
+                    Position sizing recommendations and risk assessment for informed decisions
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Analyzing View */}
+          {currentView === 'analyzing' && (
+            <div className="text-center py-16">
+              <div className="max-w-md mx-auto">
+                <div className="p-6 bg-gray-800/50 rounded-xl border border-gray-700 backdrop-blur-sm">
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="p-4 bg-blue-500/20 rounded-full">
+                      <Brain className="h-8 w-8 text-blue-400 animate-pulse" />
+                    </div>
+                  </div>
+
+                  <h2 className="text-xl font-semibold text-white mb-2">
+                    Analyzing {selectedCoin?.symbol}
+                  </h2>
+                  <p className="text-gray-400 mb-6">
+                    Gathering real-time data and generating AI predictions...
+                  </p>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-400">Fetching LunarCrush data</span>
+                      <Loader2 className="h-4 w-4 text-blue-400 animate-spin" />
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-400">Analyzing social sentiment</span>
+                      <Loader2 className="h-4 w-4 text-yellow-400 animate-spin" />
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-400">Generating AI predictions</span>
+                      <Loader2 className="h-4 w-4 text-green-400 animate-spin" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Prediction View */}
+          {currentView === 'prediction' && predictionData && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <button
+                  onClick={handleBackToSearch}
+                  className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300
+                           transition-colors duration-200 mb-4"
+                >
+                  <span>← Back to Search</span>
+                </button>
+              </div>
+
+              <PredictionCard
+                prediction={predictionData}
+                className="animate-in slide-in-from-bottom-4 duration-500"
+              />
+
+              <div className="text-center">
+                <button
+                  onClick={handleBackToSearch}
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600
+                           text-white font-medium rounded-lg shadow-lg
+                           hover:from-blue-700 hover:to-purple-700
+                           transform hover:scale-105 transition-all duration-200"
+                >
+                  Analyze Another Coin
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-16 text-gray-500 text-sm">
+          <p>Powered by LunarCrush social intelligence and advanced AI analysis</p>
+        </div>
       </div>
-    </ErrorBoundary>
+    </div>
   );
 }
