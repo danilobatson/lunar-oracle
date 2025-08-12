@@ -2487,10 +2487,10 @@ lucide-react@^0.539.0:
   resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.539.0.tgz#0d0fcd53ed7042c603d201035d9315171ed7654c"
   integrity sha512-VVISr+VF2krO91FeuCrm1rSOLACQUYVy7NQkzrOty52Y8TlTPcXcMdQFj9bYzBgXbWCiywlwSZ3Z8u6a+6bMlg==
 
-lunarcrush-sdk@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/lunarcrush-sdk/-/lunarcrush-sdk-3.5.0.tgz#19f5dd04cb90caf1b84d3d8cc2b3f0dd0bb6e93b"
-  integrity sha512-ALwNn4gxjXqeA4nQq0b0y5BzZvHH/JGmjGcb78yeLfESIkMCEynVSacUiVLqjGleEFBhKPgd4Ch4v46Gc3Pj/Q==
+lunarcrush-sdk@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/lunarcrush-sdk/-/lunarcrush-sdk-3.5.2.tgz#d48cd6ddbbb4623668e095a51a1d0ea1b2829b84"
+  integrity sha512-jV0wG2FyqB9V5WPOSpyDP5KctuX73Fk4MZaGMjMUXj59mFYV3bim+o1yUd2b6uW8LiLEUJ2M2W5vognoQVz2TA==
   dependencies:
     "@modelcontextprotocol/sdk" "^1.17.2"
     graphql "^16.8.1"

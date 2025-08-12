@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,7 +12,7 @@
     "@google/generative-ai": "^0.24.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.539.0",
-    "lunarcrush-sdk": "^3.5.0",
+    "lunarcrush-sdk": "^3.5.2",
     "next": "15.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
