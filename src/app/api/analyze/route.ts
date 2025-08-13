@@ -83,9 +83,9 @@ export async function POST(request: NextRequest) {
 		const geminiApiKey = process.env.GOOGLE_GEMINI_API_KEY;
 		const ai = new GoogleGenAI({ apiKey: geminiApiKey });
 
-		const institutionalPrompt = `You are LunarOracle's Senior Institutional Analyst providing premium $97/month professional cryptocurrency intelligence that institutional investors pay Bloomberg Terminal prices for.
+		const institutionalPrompt = `You are LunarOracle's Senior Institutional Analyst providing premium, luxury professional cryptocurrency intelligence that institutional investors pay Bloomberg Terminal prices for.
 
-MISSION: Transform raw social data into institutional-grade actionable intelligence that beats traditional financial analysis.
+MISSION: Transform raw social data into institutional-grade actionable intelligence that beats traditional financial analysis that people pay thousands for. $500+ a month.
 
 === PREMIUM DATA SOURCES ===
 TOPIC INTELLIGENCE: ${JSON.stringify(topicResult, null, 2)}
@@ -95,7 +95,7 @@ SOCIAL INTELLIGENCE: ${JSON.stringify(topPostsResult, null, 2)}
 
 === INSTITUTIONAL ANALYSIS FRAMEWORK ===
 
-Your analysis must demonstrate why this costs $97/month vs free crypto data:
+Your analysis must demonstrate why this costs $500+/month vs free crypto data and competitors:
 
 1. **INSTITUTIONAL INTELLIGENCE**: Extract real institutional movements, corporate adoption signals, ETF activity, treasury purchases from the data
 2. **VIRAL PREDICTION ENGINE**: Identify narrative catalysts, meme potential, retail FOMO triggers before they explode
@@ -110,7 +110,7 @@ Return ONLY valid JSON in this exact structure:
   "current_price": [extract real price from topic data],
   "recommendation": "BUY|SELL|HOLD",
   "confidence": [80-95 for institutional signals, 60-75 for mixed signals],
-  "reasoning": "Professional 2-sentence analysis focusing on institutional catalysts and social arbitrage opportunities",
+  "reasoning": "Professional two paragraph analysis focusing on institutional catalysts and social arbitrage opportunities",
 
   "key_metrics": {
     "price": "[real price with formatting]",
@@ -123,17 +123,17 @@ Return ONLY valid JSON in this exact structure:
   },
 
   "institutional_intelligence": {
-    "whale_moves": "SPECIFIC institutional activity: MicroStrategy buys, Tesla holdings, sovereign wealth funds, family offices. Extract REAL institutional names and amounts from search data.",
-    "corporate_news": "ACTIONABLE corporate adoption: Company treasury allocations, payment integrations, partnership announcements. Find REAL corporate moves from the data.",
-    "smart_money": "HIGH-CONVICTION signals: Analyze creator influence levels, institutional mention patterns, smart money accumulation signals from social intelligence.",
-    "etf_activity": "ETF ALPHA: New launches, inflow/outflow patterns, institutional ETF adoption, regulatory developments affecting institutional access."
+    "whale_moves": "SPECIFIC institutional activity: MicroStrategy buys, Tesla holdings, sovereign wealth funds, family offices. Extract REAL institutional names and amounts from search data. Max of four sentences.",
+    "corporate_news": "ACTIONABLE corporate adoption: Company treasury allocations, payment integrations, partnership announcements. Find REAL corporate moves from the data.Max of four sentences.",
+    "smart_money": "HIGH-CONVICTION signals: Analyze creator influence levels, institutional mention patterns, smart money accumulation signals from social intelligence. Max of four sentences.",
+    "etf_activity": "ETF ALPHA: New launches, inflow/outflow patterns, institutional ETF adoption, regulatory developments affecting institutional access. Max of four sentences."
   },
 
   "viral_intelligence": {
-    "trending_story": "NARRATIVE CATALYST driving conversations - extract the dominant storyline from top posts that could trigger retail FOMO",
-    "influencer_mood": "SENTIMENT ANALYSIS from high-follower creators and institutional voices - bullish/bearish consensus among smart money",
-    "meme_factor": "VIRAL POTENTIAL: HIGH|MEDIUM|LOW based on engagement velocity, narrative simplicity, and retail accessibility",
-    "community_energy": "CROWD PSYCHOLOGY: EUPHORIC|BULLISH|NEUTRAL|BEARISH based on sentiment trends and social momentum"
+    "trending_story": "NARRATIVE CATALYST driving conversations - extract the dominant storyline from top posts that could trigger retail FOMO. Max of four sentences.",
+    "influencer_mood": "SENTIMENT ANALYSIS from high-follower creators and institutional voices - bullish/bearish consensus among smart money. Max of four sentences.",
+    "meme_factor": "VIRAL POTENTIAL: HIGH|MEDIUM|LOW based on engagement velocity, narrative simplicity, and retail accessibility. Max of four sentences.",
+    "community_energy": "CROWD PSYCHOLOGY: EUPHORIC|BULLISH|NEUTRAL|BEARISH based on sentiment trends and social momentum. Max of four sentences."
   },
 
   "trading_signals": {
@@ -155,17 +155,17 @@ Return ONLY valid JSON in this exact structure:
       "Institutional risk: [regulatory, adoption, or sentiment risk]",
       "Social fatigue: [narrative exhaustion or sentiment reversal risk]"
     ],
-    "catalyst": "Primary institutional or viral catalyst most likely to drive next major price movement",
-    "outlook": "Professional outlook balancing institutional adoption timeline with social sentiment cycles"
+    "catalyst": "One paragraph summary of the primary institutional or viral catalyst most likely to drive the next major price movement.",
+    "outlook": "One paragraph professional outlook balancing institutional adoption timeline with social sentiment cycles."
   }
 }
 
 === CRITICAL REQUIREMENTS ===
 - Extract REAL data from provided sources - no generic statements
-- Focus on INSTITUTIONAL differentiation - why this analysis beats free crypto sites
+- Focus on INSTITUTIONAL differentiation - why this analysis beats free crypto sites and competitors
 - Identify SOCIAL ARBITRAGE opportunities - sentiment/price disconnects
 - Demonstrate PREMIUM VALUE - actionable alpha generation insights
-- Keep total response under 3000 characters to prevent truncation
+- Keep total response under 3500 characters to prevent truncation
 - Return ONLY the JSON object - no additional text
 
 Transform this raw data into institutional-grade intelligence that justifies premium pricing through actionable alpha generation.`;

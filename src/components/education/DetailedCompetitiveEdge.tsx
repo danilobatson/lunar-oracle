@@ -197,7 +197,7 @@ export default function DetailedCompetitiveEdge() {
 			{/* Exclusive Features Only We Have */}
 			<Card className='bg-slate-800 border-slate-700'>
 				<CardHeader>
-					<CardTitle className='flex items-center gap-2 text-xl'>
+					<CardTitle className='flex items-center gap-2 text-xl text-white'>
 						<Zap className='h-6 w-6 text-yellow-400' />
 						🎯 Exclusive Features Analysis (Why We Beat Everyone)
 					</CardTitle>
@@ -254,7 +254,7 @@ export default function DetailedCompetitiveEdge() {
 			{/* Detailed Competitor Comparison */}
 			<Card className='bg-slate-800 border-slate-700'>
 				<CardHeader>
-					<CardTitle className='flex items-center gap-2 text-xl'>
+					<CardTitle className='flex items-center gap-2 text-xl text-white'>
 						<Building className='h-6 w-6 text-blue-400' />
 						📊 Complete Competitor Analysis (The Honest Truth)
 					</CardTitle>
