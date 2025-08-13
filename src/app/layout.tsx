@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'LunarOracle - AI Crypto Predictions',
-  description: 'AI-powered cryptocurrency predictions using real-time social sentiment analysis',
+  title: 'LunarOracle - AI-Powered Crypto Intelligence',
+  description: 'Professional cryptocurrency predictions with real-time social intelligence',
 }
 
 export default function RootLayout({
@@ -16,9 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }
