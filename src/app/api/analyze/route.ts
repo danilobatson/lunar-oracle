@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 		const { symbol } = await request.json();
 
 		// REAL MCP connection
-		const apiKey = process.env.LUNARCRUSH_API_KEY
+		const apiKey = process.env.LUNARCRUSH_API_KEY;
 		const transport = new SSEClientTransport(
 			new URL(`https://lunarcrush.ai/sse?key=${apiKey}`)
 		);
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 			topicResult,
 			timeSeriesResult,
 			searchResult,
-			cryptoListResult,
+			// cryptoListResult,
 			topPostsResult,
 		] = await Promise.all([
 			client.callTool({
@@ -59,13 +59,13 @@ export async function POST(request: NextRequest) {
 					query: `${symbol} institutional adoption whale movements ETF treasury corporate smart money flow`,
 				},
 			}),
-			client.callTool({
-				name: 'Cryptocurrencies',
-				arguments: {
-					sort: 'alt_rank',
-					limit: 20,
-				},
-			}),
+			// client.callTool({
+			// 	name: 'Cryptocurrencies',
+			// 	arguments: {
+			// 		sort: 'alt_rank',
+			// 		limit: 20,
+			// 	},
+			// }),
 			client.callTool({
 				name: 'Topic_Posts',
 				arguments: {
@@ -91,7 +91,6 @@ MISSION: Transform raw social data into institutional-grade actionable intellige
 TOPIC INTELLIGENCE: ${JSON.stringify(topicResult, null, 2)}
 MARKET DYNAMICS: ${JSON.stringify(timeSeriesResult, null, 2)}
 INSTITUTIONAL SIGNALS: ${JSON.stringify(searchResult, null, 2)}
-MARKET RANKINGS: ${JSON.stringify(cryptoListResult, null, 2)}
 SOCIAL INTELLIGENCE: ${JSON.stringify(topPostsResult, null, 2)}
 
 === INSTITUTIONAL ANALYSIS FRAMEWORK ===
@@ -242,7 +241,7 @@ Transform this raw data into institutional-grade intelligence that justifies pre
 		console.error('🚨 Institutional intelligence system error:', error);
 		return NextResponse.json(
 			{
-				error: error instanceof Error ? error.message : String(error),
+				error: error.message,
 				type: 'institutional_analysis_error',
 			},
 			{ status: 500 }
