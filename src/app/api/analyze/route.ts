@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 		const { symbol } = await request.json();
 
 		// REAL MCP connection
-		const apiKey = process.env.LUNARCRUSH_API_KEY;
+		const apiKey = process.env.LUNARCRUSH_API_KEY
 		const transport = new SSEClientTransport(
 			new URL(`https://lunarcrush.ai/sse?key=${apiKey}`)
 		);
