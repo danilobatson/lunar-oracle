@@ -329,11 +329,11 @@ export default function SimpleDashboard() {
                       </div>
                       <div className="bg-slate-700/50 p-3 rounded-lg">
                         <p className="text-slate-400">Sentiment</p>
-                        <p className="font-bold text-white text-lg">{data.key_metrics?.sentiment || 'N/A'}%</p>
+                        <p className="font-bold text-white text-lg">{data.key_metrics?.sentiment || 'N/A'}</p>
                       </div>
                       <div className="bg-slate-700/50 p-3 rounded-lg">
                         <p className="text-slate-400">Social Dom</p>
-                        <p className="font-bold text-white text-lg">{data.key_metrics?.social_dominance || 'N/A'}%</p>
+                        <p className="font-bold text-white text-lg">{data.key_metrics?.social_dominance || 'N/A'}</p>
                       </div>
                       <div className="bg-slate-700/50 p-3 rounded-lg">
                         <p className="text-slate-400">Volume 24h</p>
