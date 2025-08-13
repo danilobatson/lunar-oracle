@@ -339,7 +339,7 @@ export default function SimpleDashboard() {
                               </Badge>
                             </div>
                             <p className="text-3xl font-bold text-green-400 mt-1">
-                              {data.current_price?.toLocaleString() || 'N/A'}
+                              ${data.current_price?.toLocaleString() || 'N/A'}
                             </p>
                           </div>
                           <div className="flex flex-col items-start sm:items-end gap-2">
@@ -378,7 +378,7 @@ export default function SimpleDashboard() {
                           <div className="bg-slate-700/50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-2">
                               <p className="text-slate-400">Galaxy Score</p>
-                              <HelpCircle className="h-3 w-3 text-slate-500" title="LunarCrush's exclusive metric measuring social influence" />
+                              <span title="LunarCrush's exclusive metric measuring social influence"><HelpCircle className="h-3 w-3 text-slate-500" /></span>
                             </div>
                             <p className="font-bold text-white text-lg">{data.key_metrics?.galaxy_score || 'N/A'}</p>
                             <p className="text-xs text-slate-400 mt-1">How much social buzz this crypto has (0-100)</p>
@@ -386,7 +386,7 @@ export default function SimpleDashboard() {
                           <div className="bg-slate-700/50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-2">
                               <p className="text-slate-400">Market Rank</p>
-                              <HelpCircle className="h-3 w-3 text-slate-500" title="Position among all cryptocurrencies" />
+                              <span title="Position among all cryptocurrencies"><HelpCircle className="h-3 w-3 text-slate-500" /></span>
                             </div>
                             <p className="font-bold text-white text-lg">#{data.key_metrics?.alt_rank || 'N/A'}</p>
                             <p className="text-xs text-slate-400 mt-1">Ranking by market cap (lower = bigger)</p>
@@ -394,7 +394,7 @@ export default function SimpleDashboard() {
                           <div className="bg-slate-700/50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-2">
                               <p className="text-slate-400">Social Sentiment</p>
-                              <HelpCircle className="h-3 w-3 text-slate-500" title="How positive people feel about this crypto" />
+                              <span title="How positive people feel about this crypto"><HelpCircle className="h-3 w-3 text-slate-500" /></span>
                             </div>
                             <p className="font-bold text-white text-lg">{data.key_metrics?.sentiment || 'N/A'}</p>
                             <p className="text-xs text-slate-400 mt-1">How bullish people are (50% = neutral)</p>
@@ -402,7 +402,7 @@ export default function SimpleDashboard() {
                           <div className="bg-slate-700/50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-2">
                               <p className="text-slate-400">Social Dominance</p>
-                              <HelpCircle className="h-3 w-3 text-slate-500" title="Share of total crypto social media attention" />
+                              <span title="Share of total crypto social media attention"><HelpCircle className="h-3 w-3 text-slate-500" /></span>
                             </div>
                             <p className="font-bold text-white text-lg">{data.key_metrics?.social_dominance || 'N/A'}</p>
                             <p className="text-xs text-slate-400 mt-1">% of all crypto social media talk</p>
