@@ -339,7 +339,7 @@ export default function SimpleDashboard() {
                               </Badge>
                             </div>
                             <p className="text-3xl font-bold text-green-400 mt-1">
-                              ${data.current_price?.toLocaleString() || 'N/A'}
+                              {data.current_price?.toLocaleString() || 'N/A'}
                             </p>
                           </div>
                           <div className="flex flex-col items-start sm:items-end gap-2">
