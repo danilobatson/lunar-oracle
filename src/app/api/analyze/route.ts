@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 			new URL(`https://lunarcrush.ai/sse?key=${apiKey}`)
 		);
 		client = new Client(
-			{ name: 'test', version: '1.0.0' },
+			{ name: 'lunarcrush-premium-intelligence', version: '2.0.0' },
 			{ capabilities: { tools: {} } }
 		);
 		await client.connect(transport);
@@ -25,10 +25,16 @@ export async function POST(request: NextRequest) {
 			arguments: { apiKey: apiKey },
 		});
 
-		// Batch multiple tool calls with Promise.all
-		console.log(`🚀 Batching 3 tool calls for ${symbol}...`);
+		// ENHANCED: Batch 5 comprehensive tool calls for institutional-grade analysis
+		console.log(`🏛️ Executing institutional-grade analysis for ${symbol}...`);
 
-		const [topicResult, timeSeriesResult, searchResult] = await Promise.all([
+		const [
+			topicResult,
+			timeSeriesResult,
+			searchResult,
+			cryptoListResult,
+			topPostsResult,
+		] = await Promise.all([
 			client.callTool({
 				name: 'Topic',
 				arguments: { topic: `$${symbol.toLowerCase()}` },
@@ -38,103 +44,151 @@ export async function POST(request: NextRequest) {
 				arguments: {
 					topic: `$${symbol.toLowerCase()}`,
 					interval: '1w',
-					metrics: ['close', 'interactions', 'sentiment'],
+					metrics: [
+						'close',
+						'interactions',
+						'sentiment',
+						'contributors_active',
+						'social_dominance',
+					],
 				},
 			}),
 			client.callTool({
 				name: 'Search',
 				arguments: {
-					query: `${symbol} social sentiment technical analysis price prediction institutional flow`,
+					query: `${symbol} institutional adoption whale movements ETF treasury corporate smart money flow`,
+				},
+			}),
+			client.callTool({
+				name: 'Cryptocurrencies',
+				arguments: {
+					sort: 'alt_rank',
+					limit: 20,
+				},
+			}),
+			client.callTool({
+				name: 'Topic_Posts',
+				arguments: {
+					topic: `$${symbol.toLowerCase()}`,
+					interval: '1w',
 				},
 			}),
 		]);
 
-		console.log('✅ All 3 tool calls completed');
+		console.log(
+			'✅ Institutional intelligence gathered from 5 premium data sources'
+		);
 
-		// PREMIUM ANALYSIS PROMPT - Worth $50-100/month
+		// PREMIUM INSTITUTIONAL ANALYSIS PROMPT - Professional Grade
 		const geminiApiKey = process.env.GOOGLE_GEMINI_API_KEY;
 		const ai = new GoogleGenAI({ apiKey: geminiApiKey });
 
-		const premiumAnalysisPrompt = `You are a premium cryptocurrency analyst providing $497/month professional analysis.
+		const institutionalPrompt = `You are LunarOracle's Senior Institutional Analyst providing premium $97/month professional cryptocurrency intelligence that institutional investors pay Bloomberg Terminal prices for.
 
-Analyze ${symbol.toUpperCase()} data and provide actionable insights:
+MISSION: Transform raw social data into institutional-grade actionable intelligence that beats traditional financial analysis.
 
-TOPIC DATA: ${JSON.stringify(topicResult, null, 2)}
-TIME SERIES DATA: ${JSON.stringify(timeSeriesResult, null, 2)}
-SEARCH DATA: ${JSON.stringify(searchResult, null, 2)}
+=== PREMIUM DATA SOURCES ===
+TOPIC INTELLIGENCE: ${JSON.stringify(topicResult, null, 2)}
+MARKET DYNAMICS: ${JSON.stringify(timeSeriesResult, null, 2)}
+INSTITUTIONAL SIGNALS: ${JSON.stringify(searchResult, null, 2)}
+MARKET RANKINGS: ${JSON.stringify(cryptoListResult, null, 2)}
+SOCIAL INTELLIGENCE: ${JSON.stringify(topPostsResult, null, 2)}
 
-Return valid JSON in this EXACT format:
+=== INSTITUTIONAL ANALYSIS FRAMEWORK ===
+
+Your analysis must demonstrate why this costs $97/month vs free crypto data:
+
+1. **INSTITUTIONAL INTELLIGENCE**: Extract real institutional movements, corporate adoption signals, ETF activity, treasury purchases from the data
+2. **VIRAL PREDICTION ENGINE**: Identify narrative catalysts, meme potential, retail FOMO triggers before they explode
+3. **SMART MONEY TRACKING**: Detect high-conviction signals from whale movements and institutional sentiment shifts
+4. **SOCIAL SENTIMENT ARBITRAGE**: Find disconnects between social momentum and price action for alpha generation
+
+=== RESPONSE FORMAT ===
+Return ONLY valid JSON in this exact structure:
 
 {
   "symbol": "${symbol.toUpperCase()}",
-  "current_price": "extract real price from data",
+  "current_price": [extract real price from topic data],
   "recommendation": "BUY|SELL|HOLD",
-  "confidence": 85,
-  "reasoning": "Brief analysis based on data",
+  "confidence": [80-95 for institutional signals, 60-75 for mixed signals],
+  "reasoning": "Professional 2-sentence analysis focusing on institutional catalysts and social arbitrage opportunities",
 
   "key_metrics": {
-    "price": "extract real price",
-    "galaxy_score": "extract galaxy score",
-    "alt_rank": "extract alt rank",
-    "social_dominance": "extract social dominance %",
-    "sentiment": "extract sentiment %",
-    "volume_24h": "extract volume",
-    "market_cap": "extract market cap"
+    "price": "[real price with formatting]",
+    "galaxy_score": "[extract galaxy score - our competitive moat]",
+    "alt_rank": "[extract ranking - relative market position]",
+    "social_dominance": "[extract % - attention monopolization]",
+    "sentiment": "[extract % - crowd psychology]",
+    "volume_24h": "[extract trading volume]",
+    "market_cap": "[extract market cap]"
   },
 
   "institutional_intelligence": {
-    "whale_moves": "Extract major institutional purchases/sales from news - look for company names, ETF flows, sovereign funds",
-    "corporate_news": "Extract corporate adoption, treasury moves, institutional announcements from news data",
-    "smart_money": "Identify institutional signals from high-follower creators and news mentions",
-    "etf_activity": "Extract any ETF launch/inflow data from news"
+    "whale_moves": "SPECIFIC institutional activity: MicroStrategy buys, Tesla holdings, sovereign wealth funds, family offices. Extract REAL institutional names and amounts from search data.",
+    "corporate_news": "ACTIONABLE corporate adoption: Company treasury allocations, payment integrations, partnership announcements. Find REAL corporate moves from the data.",
+    "smart_money": "HIGH-CONVICTION signals: Analyze creator influence levels, institutional mention patterns, smart money accumulation signals from social intelligence.",
+    "etf_activity": "ETF ALPHA: New launches, inflow/outflow patterns, institutional ETF adoption, regulatory developments affecting institutional access."
   },
 
   "viral_intelligence": {
-    "trending_story": "Main narrative driving conversations from top engagement posts",
-    "influencer_mood": "Sentiment from creators with >100K followers",
-    "meme_factor": "HIGH|MEDIUM|LOW viral potential based on engagement",
-    "community_energy": "EUPHORIC|BULLISH|NEUTRAL|BEARISH based on sentiment"
+    "trending_story": "NARRATIVE CATALYST driving conversations - extract the dominant storyline from top posts that could trigger retail FOMO",
+    "influencer_mood": "SENTIMENT ANALYSIS from high-follower creators and institutional voices - bullish/bearish consensus among smart money",
+    "meme_factor": "VIRAL POTENTIAL: HIGH|MEDIUM|LOW based on engagement velocity, narrative simplicity, and retail accessibility",
+    "community_energy": "CROWD PSYCHOLOGY: EUPHORIC|BULLISH|NEUTRAL|BEARISH based on sentiment trends and social momentum"
   },
 
   "trading_signals": {
-    "entry_zone": "$X,XXX - $X,XXX",
-    "stop_loss": "$X,XXX",
-    "target_1": "$X,XXX",
-    "target_2": "$X,XXX",
-    "position_size": "X% of portfolio",
-    "timeframe": "X days/weeks"
+    "entry_zone": "$[price - 3%] - $[price + 2%] based on institutional support levels",
+    "stop_loss": "$[price - 8%] below institutional accumulation zone",
+    "target_1": "$[price + 15%] institutional momentum target",
+    "target_2": "$[price + 35%] viral narrative completion target",
+    "position_size": "[2-5%] of portfolio based on confidence level",
+    "timeframe": "[2-8] weeks for institutional catalyst completion"
   },
 
   "ai_summary": {
-    "bulls": ["Key bullish factor 1", "Key bullish factor 2"],
-    "bears": ["Key risk 1", "Key risk 2"],
-    "catalyst": "Main price driver identified",
-    "outlook": "Short summary of price direction"
+    "bulls": [
+      "Institutional catalyst: [specific institutional development]",
+      "Social arbitrage: [social momentum vs price disconnect]",
+      "Technical confluence: [technical + social alignment]"
+    ],
+    "bears": [
+      "Institutional risk: [regulatory, adoption, or sentiment risk]",
+      "Social fatigue: [narrative exhaustion or sentiment reversal risk]"
+    ],
+    "catalyst": "Primary institutional or viral catalyst most likely to drive next major price movement",
+    "outlook": "Professional outlook balancing institutional adoption timeline with social sentiment cycles"
   }
 }
 
-CRITICAL RULES:
-- Return ONLY valid JSON - no extra text
-- Extract REAL data from the provided MCP results
-- Focus on institutional_intelligence and viral_intelligence for premium value
-- Keep response under 2000 characters to avoid truncation
-- Use actual numbers from the data, not placeholders
-`;
+=== CRITICAL REQUIREMENTS ===
+- Extract REAL data from provided sources - no generic statements
+- Focus on INSTITUTIONAL differentiation - why this analysis beats free crypto sites
+- Identify SOCIAL ARBITRAGE opportunities - sentiment/price disconnects
+- Demonstrate PREMIUM VALUE - actionable alpha generation insights
+- Keep total response under 3000 characters to prevent truncation
+- Return ONLY the JSON object - no additional text
+
+Transform this raw data into institutional-grade intelligence that justifies premium pricing through actionable alpha generation.`;
 
 		const geminiResponse = await ai.models.generateContent({
 			model: 'gemini-2.0-flash-lite',
-			contents: premiumAnalysisPrompt,
+			contents: institutionalPrompt,
 		});
 
 		const analysisText =
 			geminiResponse.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
-		console.log('🤖 Raw response length:', analysisText.length);
+		console.log(
+			'🏛️ Premium institutional analysis generated:',
+			analysisText.length,
+			'characters'
+		);
 
 		try {
 			// Extract JSON from response
 			const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
 			if (!jsonMatch) {
-				throw new Error('No JSON found in Gemini response');
+				throw new Error('No JSON found in institutional analysis');
 			}
 
 			let jsonText = jsonMatch[0];
@@ -149,30 +203,50 @@ CRITICAL RULES:
 				}
 			}
 
-			// Remove trailing commas
+			// Remove trailing commas and fix common issues
 			jsonText = jsonText.replace(/,(\s*[}\]])/g, '$1');
 
 			const analysis = JSON.parse(jsonText);
 
+			// ENHANCED: Add premium metadata to show institutional-grade processing
 			return NextResponse.json({
-				data: analysis,
-				success: true,
-				raw_data: {
-					topic: topicResult,
-					time_series: timeSeriesResult,
-					search: searchResult,
+				...analysis,
+				metadata: {
+					analysis_type: 'institutional_grade',
+					data_sources: 5,
+					processing_time: Date.now(),
+					premium_features: [
+						'institutional_whale_tracking',
+						'viral_narrative_prediction',
+						'social_sentiment_arbitrage',
+						'smart_money_signals',
+					],
+				},
+				raw_intelligence: {
+					topic_data: topicResult,
+					market_dynamics: timeSeriesResult,
+					institutional_signals: searchResult,
+					social_posts: topPostsResult,
 				},
 			});
 		} catch (error) {
-			console.error('❌ JSON parsing failed:', error.message);
-			console.error('❌ Problematic JSON:', analysisText.substring(0, 1000));
+			const errMsg = error instanceof Error ? error.message : String(error);
+			console.error('❌ Premium analysis parsing failed:', errMsg);
+			console.error('❌ Response sample:', analysisText.substring(0, 500));
 
-			// Throw the error to be handled by main try-catch
-			throw new Error(`Gemini response parsing failed: ${error.message}`);
+			throw new Error(
+				`Premium institutional analysis failed: ${errMsg}`
+			);
 		}
 	} catch (error) {
-		console.error('Premium analysis error:', error);
-		return NextResponse.json({ error: error.message }, { status: 500 });
+		console.error('🚨 Institutional intelligence system error:', error);
+		return NextResponse.json(
+			{
+				error: error instanceof Error ? error.message : String(error),
+				type: 'institutional_analysis_error',
+			},
+			{ status: 500 }
+		);
 	} finally {
 		if (client) await client.close();
 	}
