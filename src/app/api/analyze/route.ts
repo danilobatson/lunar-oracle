@@ -241,7 +241,7 @@ Transform this raw data into institutional-grade intelligence that justifies pre
 		console.error('🚨 Institutional intelligence system error:', error);
 		return NextResponse.json(
 			{
-				error: error.message,
+				error: error instanceof Error ? error.message : String(error),
 				type: 'institutional_analysis_error',
 			},
 			{ status: 500 }
