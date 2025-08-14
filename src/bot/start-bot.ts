@@ -1,41 +1,55 @@
 import dotenv from 'dotenv';
-import NexusQuantumBot from './nexus-bot';
+import { setupBot, shutdown } from './nexus-bot';
 
-// Load environment variables
+// NEXUS: Fixed Bot Startup
+// With Telegram message length handling
+
 dotenv.config({ path: '.env.local' });
 
-// Validate required environment variables
-const requiredEnvs = [
-  'TELEGRAM_BOT_TOKEN',
-  'LUNARCRUSH_API_KEY',
-  'GOOGLE_GEMINI_API_KEY'
-];
+const validateEnvironment = () => {
+  const requiredEnvs = [
+    'TELEGRAM_BOT_TOKEN',
+    'LUNARCRUSH_API_KEY',
+    'GOOGLE_GEMINI_API_KEY'
+  ];
 
-for (const env of requiredEnvs) {
-  if (!process.env[env]) {
-    console.error(`❌ Missing required environment variable: ${env}`);
+  const missingEnvs = requiredEnvs.filter(env => !process.env[env]);
+
+  if (missingEnvs.length > 0) {
+    console.error(`❌ Missing environment variables: ${missingEnvs.join(', ')}`);
     process.exit(1);
   }
-}
 
-// Create and start bot
-const bot = new NexusQuantumBot(process.env.TELEGRAM_BOT_TOKEN!);
+  return true;
+};
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-  console.log('\n🌙 Shutting down Quantum Owl...');
-  bot.stop();
-  process.exit(0);
-});
+const startBot = async () => {
+  try {
+    validateEnvironment();
 
-process.on('SIGTERM', () => {
-  console.log('\n🌙 Quantum Owl received termination signal...');
-  bot.stop();
-  process.exit(0);
-});
+    console.log('🦉 NEXUS Fixed Quantum Owl starting...');
+    console.log('📱 Message length limits handled...');
 
-// Start the bot
-bot.start();
+    const botInstance = await setupBot(process.env.TELEGRAM_BOT_TOKEN);
 
-console.log('🦉 NEXUS Quantum Owl is now watching the crypto realm...');
-console.log('🔮 Ready to deliver predictive intelligence!');
+    const shutdownHandlers = ['SIGINT', 'SIGTERM'];
+
+    shutdownHandlers.forEach(signal => {
+      process.on(signal, async () => {
+        console.log(`\n🌙 Received ${signal} - Shutting down...`);
+        await shutdown(botInstance);
+        process.exit(0);
+      });
+    });
+
+    console.log('✅ NEXUS Fixed Quantum Owl is ready!');
+    console.log('📱 Smart message chunking active!');
+    console.log('🔮 Optimized for Telegram limits!');
+
+  } catch (error) {
+    console.error('❌ Failed to start bot:', error);
+    process.exit(1);
+  }
+};
+
+startBot();

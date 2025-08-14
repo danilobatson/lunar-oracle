@@ -7,20 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "bot:dev": "tsx src/bot/start-modern-bot.ts",
+    "bot": "tsx src/bot/start-bot.ts",
+    "bot:dev": "tsx src/bot/start-bot.ts",
     "bot:build": "tsc src/bot/start-bot.ts --outDir dist/bot",
-    "bot:start": "node dist/bot/start-bot.js",
-    "bot:unlimited": "tsx src/bot/start-unlimited-bot.ts",
-    "bot:test": "tsx src/bot/start-fixed-bot.ts",
-    "bot:modern": "tsx src/bot/start-modern-bot.ts",
-    "bot:fixed": "tsx src/bot/start-fixed-bot.ts",
-    "bot:real": "tsx src/bot/start-real-data-bot.ts",
-    "bot:production": "tsx src/bot/start-real-data-bot.ts",
-    "test:bot": "tsx test-bot-functionality.js",
-    "test:quick": "./validate_bot.sh",
-    "test:all": "./run-all-tests.sh",
-    "test:manual": "node manual-test-bot.js",
-    "test:verify": "./run-all-tests.sh && node manual-test-bot.js"
+    "bot:start": "node dist/bot/start-bot.js"
   },
   "dependencies": {
     "@google/genai": "^1.13.0",
