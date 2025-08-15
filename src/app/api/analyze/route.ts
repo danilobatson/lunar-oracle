@@ -122,7 +122,7 @@ Return ONLY this JSON structure:
       "⚡ **QUANTUM TRADING SIGNALS**\\n\\n🎯 **Primary Catalyst**: [Real catalyst from data]\\n📈 **Price Targets**: $[target1] and $[target2]\\n🛡️ **Stop Loss**: $[stop level]\\n⏰ **Timeframe**: [X] weeks\\n\\n🔮 **Mystical Outlook**: [Synthesize the data into a forward-looking prediction. Reference real trends, institutional adoption, or social momentum. Make it premium-worthy.]\\n\\n*🦉 The Owl sees beyond AIXBT's reactive analysis*"
     ],
     "telegram": [
-      "[Similar 3-chunk structure optimized for Telegram's 4096 char limit]"
+      "[Similar 3-chunk structure as delivery_chunks.slack for Telegram's 4096 char limit]"
     ],
     "discord": [
       "[Similar 3-chunk structure optimized for Discord's 2000 char limit]"
