@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🦉 NEXUS: The Quantum Owl
 
-## Getting Started
+**Democratizing institutional-grade crypto intelligence**
 
-First, run the development server:
+NEXUS transforms AIXBT's $78K exclusive crypto intelligence into accessible mystical analysis for everyone at $29/month.
+
+## 🚀 Features
+
+- **🔮 Quantum Analysis**: Deep crypto predictions using LunarCrush MCP data
+- **🦉 Mystical Oracle**: AI-powered insights 24-48h ahead of market movements
+- **⚡ Multi-Platform**: Slack, Telegram, Discord integration
+- **📊 Real Data**: Live institutional tracking, social sentiment, whale movements
+- **💰 Affordable**: $29/month vs AIXBT's $78K barrier
+
+## 🛠️ Tech Stack
+
+- **Next.js 14** - Web framework
+- **LunarCrush MCP** - Real-time crypto data
+- **Google Gemini** - AI analysis engine
+- **Slack Bolt** - Bot integration
+- **TypeScript** - Type safety
+
+## 🔧 Development Setup
 
 ```bash
-npm run dev
-# or
+# Install dependencies
+yarn install
+
+# Start development server
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Start Slack bot
+yarn slack-bot
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📋 Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# LunarCrush API
+LUNARCRUSH_API_KEY=your_lunarcrush_key
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Google Gemini AI
+GOOGLE_GEMINI_API_KEY=your_gemini_key
 
-## Learn More
+# Slack Bot (for /owl-* commands)
+SLACK_BOT_TOKEN=xoxb-...
+SLACK_SIGNING_SECRET=...
+SLACK_APP_TOKEN=xapp-...
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🦉 Slack Commands
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/owl-analyze [symbol]` - Rich crypto analysis
+- `/owl-trending` - Top trending cryptos
+- `/owl-alerts` - Manage price alerts
+- `/owl-status` - Account status
+- `/owl-help` - Command guide
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Project Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/api/
+│   ├── analyze/     # Main Quantum Owl API
+│   └── trending/    # Trending cryptos API
+├── bots/slack/      # Slack bot integration
+├── shared/commands/ # Cross-platform command handlers
+└── stores/          # State management (future)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎯 Roadmap
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- ✅ **Phase 1**: Rich Slack analysis with real LunarCrush data
+- 🚧 **Phase 2**: Telegram bot with same commands
+- 🚧 **Phase 3**: Alert system with database
+- 🚧 **Phase 4**: 7-tier subscription system
+- 🚧 **Phase 5**: Multi-platform expansion
+
+## 📈 Why NEXUS Beats AIXBT
+
+| Feature | AIXBT | NEXUS |
+|---------|--------|--------|
+| **Entry Cost** | $78,000+ | $29/month |
+| **Data Sources** | Twitter only | 5+ platforms |
+| **Analysis Type** | Reactive | Predictive |
+| **Access** | Exclusive Discord | Multi-platform |
+| **Democratization** | Elite only | Everyone |
+
+## 🔮 The Quantum Owl Advantage
+
+> *"While AIXBT reacts to price movements, NEXUS predicts them 24-48 hours early using quantum social intelligence patterns that traditional analysis cannot detect."*
+
+---
+
+**Ready to dominate crypto with mystical intelligence?** 🚀
+
+Start with `/owl-analyze BTC` in Slack and experience the future of democratized crypto analysis.

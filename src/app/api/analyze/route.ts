@@ -59,132 +59,136 @@ export async function POST(request: NextRequest) {
 
     console.log('✨ Quantum intelligence gathered from 4 mystical sources');
 
-    // SIMPLE GEMINI PROMPT - Focus on getting basic JSON structure
+    // RICH QUANTUM OWL PROMPT - Extract ALL the valuable data
     const geminiApiKey = process.env.GOOGLE_GEMINI_API_KEY;
     const ai = new GoogleGenAI({ apiKey: geminiApiKey });
 
-    const simplePrompt = `Extract Bitcoin price from this data and create a mystical crypto analysis.
+    const richQuantumPrompt = `You are the NEXUS Quantum Owl - a mystical oracle that transforms raw institutional data into premium crypto intelligence worth $297/month. You have 410K+ characters of REAL LunarCrush data.
 
-Data to analyze:
-${JSON.stringify(topicResult, null, 1)}
+🔮 MISSION: Create RICH, detailed chunks that justify premium pricing. Each chunk should be substantial, actionable, and mystical.
 
-Return this EXACT JSON structure (fill in the blanks):
+📊 REAL LUNARCRUSH DATA TO ANALYZE:
+TOPIC INTELLIGENCE: ${JSON.stringify(topicResult, null, 2)}
+TIME SERIES PATTERNS: ${JSON.stringify(timeSeriesResult, null, 2)}
+INSTITUTIONAL SIGNALS: ${JSON.stringify(searchResult, null, 2)}
+SOCIAL PROPHECY: ${JSON.stringify(topPostsResult, null, 2)}
+
+🎯 EXTRACT THESE REAL VALUES:
+- Current price from topic data (exact number)
+- Galaxy Score (LunarCrush exclusive metric)
+- Social sentiment percentage
+- Real institutional moves from search data
+- Specific social posts and engagement metrics
+- Actual trading volume and market cap
+
+⚡ CRITICAL: Use REAL data from the sources above. No generic statements!
+
+📱 SLACK CHUNKS - Each 800-1200 characters, rich and detailed:
+
+Return ONLY this JSON structure:
 
 {
   "symbol": "${symbol.toUpperCase()}",
-  "price": "$120000",
-  "prediction": "BUY",
-  "confidence": 85,
+  "price": "[EXTRACT exact price from topic data]",
+  "prediction": "[BUY/SELL/HOLD based on real data analysis]",
+  "confidence": [60-95 based on data strength],
+
   "oracle_vision": {
-    "headline": "🦉 The Owl sees ${symbol.toUpperCase()} ascending to new heights - crystal clarity",
-    "reasoning": "Strong institutional momentum and social sentiment align for bullish continuation",
-    "price_target": "Quantum convergence points to $130000 within 4 weeks"
+    "headline": "🦉 The Owl perceives [specific prediction] as [real catalyst] drives quantum convergence to $[target] within [timeframe]",
+    "reasoning": "Extract the PRIMARY catalyst from real search/social data. Use mystical language but reference specific institutional moves, social momentum shifts, or technical confluences found in the data.",
+    "price_target": "Quantum algorithms detect convergence patterns pointing to $[specific target] by [specific timeframe] based on [real data pattern]"
   },
+
   "quantum_signals": {
-    "primary_catalyst": "🎯 CATALYST: Institutional adoption accelerating with strong fundamentals",
-    "whale_activity": "🐋 WHALES: Smart money accumulation patterns detected",
-    "social_momentum": "📈 VIRAL: Bullish sentiment building across communities",
-    "risk_warning": "⚠️ CAUTION: Monitor for overextension at current levels"
+    "primary_catalyst": "🎯 CATALYST: [Extract specific institutional event, regulatory news, or social trend from search data]. [Explain impact using real metrics].",
+    "whale_activity": "🐋 WHALES: [Extract actual institutional mentions, volumes, or smart money moves from data]. [Quantify the activity].",
+    "social_momentum": "📈 VIRAL: [Use real social metrics - mentions, sentiment %, engagement trends]. [Predict retail FOMO based on data].",
+    "risk_warning": "⚠️ CAUTION: [Identify real risk from data - high volatility, negative sentiment trends, or bearish signals]. [Quantify the risk]."
   },
+
   "trading_wisdom": {
-    "entry_strategy": "🎪 ENTRY: Dollar cost average approach recommended",
-    "position_size": "💰 ALLOCATION: 3-5% of portfolio allocation",
-    "exit_targets": "🎯 TARGETS: $130000 and $140000 targets",
-    "stop_loss": "🛡️ PROTECTION: Exit below $110000"
+    "entry_strategy": "🎪 ENTRY: [Specific entry based on real support levels from data]. [Reference actual volume or sentiment thresholds].",
+    "position_size": "💰 ALLOCATION: [X]% portfolio allocation based on confidence level and real volatility metrics from data.",
+    "exit_targets": "🎯 TARGETS: $[target1] (+[%]) and $[target2] (+[%]) based on [real resistance levels or momentum patterns].",
+    "stop_loss": "🛡️ PROTECTION: Exit below $[stop] (-[%]) if [specific invalidation condition from data]."
   },
+
   "delivery_chunks": {
-    "telegram": [
-      "🦉 NEXUS QUANTUM OWL\\n\\n${symbol.toUpperCase()}: $120000\\n📈 BUY - 85% confidence\\n\\nThe Owl sees ascending patterns...",
-      "🔮 MYSTICAL ANALYSIS\\n\\nSentiment: Bullish\\nWhales: Accumulating\\nTarget: $130000",
-      "💰 TRADING WISDOM\\n\\nPosition: 3-5%\\nEntry: DCA approach\\nStop: $110000"
-    ],
     "slack": [
-      "🦉 NEXUS Owl Prophecy\\n\\n${symbol.toUpperCase()}: $120000\\n📈 BUY (85%)\\n\\nTarget: $130000",
-      "Analysis: Bullish momentum\\nPosition: 3-5% portfolio"
+      "🦉 **NEXUS QUANTUM OWL PROPHECY**\\n\\n**${symbol.toUpperCase()}**: $[real price]\\n📈 **[PREDICTION]** - [confidence]% Mystical Certainty\\n\\n🔮 **The Oracle's Vision:**\\n[Extract the most compelling narrative from search/social data. Make it mystical but reference real events, institutional moves, or viral trends. 2-3 detailed sentences.]\\n\\n⚡ *Premium intelligence that AIXBT's $78K system cannot match*",
+
+      "🧙‍♂️ **INSTITUTIONAL INTELLIGENCE**\\n\\n🐋 **Whale Movements**: [Extract real institutional activity from search data]\\n\\n📊 **Social Dominance**: [Real %] of crypto conversations\\n🎯 **Galaxy Score**: [Real score]/100 (LunarCrush exclusive)\\n💬 **Sentiment**: [Real %] bullish momentum\\n\\n🎪 **Entry Strategy**: [Specific entry based on real data]\\n💰 **Position Size**: [X]% portfolio allocation",
+
+      "⚡ **QUANTUM TRADING SIGNALS**\\n\\n🎯 **Primary Catalyst**: [Real catalyst from data]\\n📈 **Price Targets**: $[target1] and $[target2]\\n🛡️ **Stop Loss**: $[stop level]\\n⏰ **Timeframe**: [X] weeks\\n\\n🔮 **Mystical Outlook**: [Synthesize the data into a forward-looking prediction. Reference real trends, institutional adoption, or social momentum. Make it premium-worthy.]\\n\\n*🦉 The Owl sees beyond AIXBT's reactive analysis*"
+    ],
+    "telegram": [
+      "[Similar 3-chunk structure optimized for Telegram's 4096 char limit]"
     ],
     "discord": [
-      "🦉 ${symbol.toUpperCase()}: $120000\\n📈 BUY (85%)\\nTarget: $130000",
-      "Position: 3-5% | Stop: $110000"
+      "[Similar 3-chunk structure optimized for Discord's 2000 char limit]"
     ],
-    "summary": "🦉 ${symbol.toUpperCase()} BUY - Target $130000 (85% confidence)"
+    "summary": "🦉 ${symbol.toUpperCase()} [PREDICTION] - $[target] target ([confidence]% confidence) - [primary catalyst]"
   },
+
   "owl_metadata": {
-    "vision_time": "24-48 hours ahead of market realization",
-    "confidence_phrase": "Crystal clarity",
-    "mystical_emoji": "🦉✨🔮",
-    "comparison_to_aixbt": "NEXUS predicts 24-48h before AIXBT reacts"
+    "vision_time": "The Owl perceives quantum patterns [X] hours before market realization",
+    "confidence_phrase": "[Crystal clarity|Quantum certainty|Mystical convergence|Faint whispers] based on confidence",
+    "mystical_emoji": "🦉✨🔮⚡",
+    "comparison_to_aixbt": "NEXUS predicted this [X]h before AIXBT's $78K system could react"
   }
 }
 
-CRITICAL: Return ONLY the JSON above. Replace $120000 with the actual Bitcoin price from the data.`;
+🚨 CRITICAL REQUIREMENTS:
+- Use REAL data only - extract actual prices, metrics, institutional moves
+- Each Slack chunk must be 800-1200 characters (rich and detailed)
+- Reference specific LunarCrush metrics (Galaxy Score, Social Dominance)
+- Make it mystical but actionable and premium-worthy
+- No generic statements - everything must be data-driven
+- Justify the $297/month premium over free crypto sites
 
-    console.log('🔮 Sending simple prompt to Gemini...');
+Transform this massive dataset into mystical oracle wisdom worth premium pricing!`;
+
+    console.log('🔮 Sending RICH data extraction prompt to Gemini...');
 
     const geminiResponse = await ai.models.generateContent({
       model: 'gemini-2.0-flash-lite',
-      contents: simplePrompt,
+      contents: richQuantumPrompt,
     });
 
     const analysisText = geminiResponse.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
     console.log('📄 Gemini response length:', analysisText.length, 'characters');
-    console.log('📄 Gemini response preview:', analysisText.substring(0, 200));
 
     let owlProphecy;
 
     try {
-      // Simple JSON parsing - if this fails, we'll use a hardcoded response
+      // Extract JSON from response
       const cleanedResponse = analysisText.replace(/```json|```/g, '').trim();
-      owlProphecy = JSON.parse(cleanedResponse);
-      console.log('✅ Gemini JSON parsing: SUCCESS');
-    } catch (parseError) {
-      console.log('⚠️ Gemini JSON parsing failed, using fallback structure');
+      const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
 
-      // Hardcoded Quantum Owl response as fallback
-      owlProphecy = {
-        symbol: symbol.toUpperCase(),
-        price: "$120,000",
-        prediction: "BUY",
-        confidence: 85,
-        oracle_vision: {
-          headline: `🦉 The Owl sees ${symbol.toUpperCase()} ascending to quantum heights - crystal clarity`,
-          reasoning: "Mystical convergence of institutional flows and social momentum creates powerful bullish energy. The quantum field aligns for continued ascension.",
-          price_target: "Quantum convergence points to $130,000 by late August"
-        },
-        quantum_signals: {
-          primary_catalyst: "🎯 CATALYST: Strong institutional adoption and social momentum building. Bullish energy concentrating.",
-          whale_activity: "🐋 WHALES: Smart money accumulation detected across multiple addresses. Large position building continues.",
-          social_momentum: "📈 VIRAL: Sentiment strongly bullish with growing community engagement. Retail FOMO building momentum.",
-          risk_warning: "⚠️ CAUTION: Overextension possible at current levels. Monitor for profit-taking signals."
-        },
-        trading_wisdom: {
-          entry_strategy: "🎪 ENTRY: Buy 25% at current levels, 75% on dips to $115,000. Dollar cost average approach.",
-          position_size: "💰 ALLOCATION: 3-5% of portfolio for moderate risk conviction. Strong fundamentals support position.",
-          exit_targets: "🎯 TARGETS: $130,000 (+15%) and $140,000 (+25%) within 4-6 weeks.",
-          stop_loss: "🛡️ PROTECTION: Exit below $110,000 (-8%) to preserve capital."
-        },
-        delivery_chunks: {
-          telegram: [
-            `🦉 **NEXUS QUANTUM OWL PROPHECY**\n\n${symbol.toUpperCase()}: $120,000\n📈 **BUY SIGNAL** - 85% confidence\n\nThe Owl sees ascending patterns in the quantum field...`,
-            "🔮 **MYSTICAL ANALYSIS**\n\nSentiment: Bullish\n🐋 Whales accumulating\n📈 Social momentum building\n\nTarget: $130,000 in 4-6 weeks",
-            "💰 **TRADING WISDOM**\n\nEntry: Buy 25% now, 75% on dips\nPosition: 3-5% of portfolio\nStop: $110,000 (-8%)\n\n⚡ *NEXUS sees 24-48h ahead of AIXBT's $78K system*"
-          ],
-          slack: [
-            `🦉 *NEXUS Quantum Owl Prophecy*\n\n*${symbol.toUpperCase()}*: $120,000\n📈 *BUY SIGNAL* - 85% confidence\n\n_The Owl perceives quantum patterns ascending in the mystical data streams..._`,
-            "🔮 *Analysis Summary*\n• Sentiment: Bullish\n• Whales: Accumulating 🐋\n• Social: Momentum building 📈\n• Target: $130,000 (4-6 weeks)\n\n💰 Position: 3-5% | Stop: $110,000\n\n_⚡ Democratizing AIXBT's $78K insights for $29/month_"
-          ],
-          discord: [
-            `🦉 **NEXUS OWL** 🔮\n\n**${symbol.toUpperCase()}**: $120,000\n📈 **BUY** (85%)\n\nTarget: $130,000\nStop: $110,000`,
-            "💰 **Trade**: 3-5% portfolio\n⏰ **Timeline**: 4-6 weeks\n⚡ **Edge**: Predicts 24-48h before AIXBT"
-          ],
-          summary: `🦉 ${symbol.toUpperCase()} BUY - Target $130,000 (85% confidence)`
-        },
-        owl_metadata: {
-          vision_time: "The Owl perceives quantum patterns 24-48 hours before market realization",
-          confidence_phrase: "Crystal clarity",
-          mystical_emoji: "🦉✨🔮",
-          comparison_to_aixbt: "While AIXBT reacts to price changes, NEXUS predicts the movement 24-48h early"
+      if (!jsonMatch) {
+        throw new Error('No JSON found in Gemini response');
+      }
+
+      owlProphecy = JSON.parse(jsonMatch[0]);
+      console.log('✅ Gemini JSON parsing: SUCCESS');
+
+      // Validate rich chunks
+      const slackChunks = owlProphecy.delivery_chunks?.slack;
+      if (!slackChunks || slackChunks.length < 3) {
+        throw new Error(`Expected 3 rich Slack chunks, got ${slackChunks?.length || 0}`);
+      }
+
+      slackChunks.forEach((chunk, i) => {
+        if (chunk.length < 400) {
+          console.warn(`⚠️ Chunk ${i+1} too short: ${chunk.length} chars`);
+        } else {
+          console.log(`✅ Chunk ${i+1}: ${chunk.length} chars (rich)`);
         }
-      };
+      });
+
+    } catch (parseError) {
+      console.log('⚠️ Gemini JSON parsing failed, this should not happen with rich data');
+      throw new Error(`Failed to parse Gemini response: ${parseError.message}`);
     }
 
     // Build final response with metadata
@@ -196,7 +200,8 @@ CRITICAL: Return ONLY the JSON above. Replace $120000 with the actual Bitcoin pr
         subscription_tier: tier,
         prediction_timestamp: new Date().toISOString(),
         sources_analyzed: 4,
-        advantage_over_aixbt: 'Predictive vs reactive analysis, 2689x cheaper access',
+        data_richness: 'premium_institutional_grade',
+        advantage_over_aixbt: 'Predictive vs reactive, 2689x cheaper access',
       },
       raw_intelligence: {
         topic_data: topicResult,
@@ -206,9 +211,7 @@ CRITICAL: Return ONLY the JSON above. Replace $120000 with the actual Bitcoin pr
       }
     };
 
-    console.log('🦉 Quantum Owl prophecy ready for delivery');
-    console.log('🔍 Response structure:', Object.keys(enhancedResponse));
-
+    console.log('🦉 RICH Quantum Owl prophecy ready for delivery');
     return NextResponse.json(enhancedResponse);
 
   } catch (error) {
