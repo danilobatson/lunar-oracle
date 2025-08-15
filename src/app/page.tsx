@@ -1,11 +1,9 @@
-import SimpleDashboard from '@/components/SimpleDashboard';
 import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
   return (
     <>
-      <SimpleDashboard />
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
