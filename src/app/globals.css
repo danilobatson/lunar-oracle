@@ -4,224 +4,264 @@
 
 /* NEXUS: Quantum Owl Theme - Mystical Dark Theme */
 :root {
-  /* Quantum Owl Brand Colors */
-  --quantum-purple: #8B5CF6;
-  --cosmic-blue: #3B82F6;
-  --ethereal-cyan: #06B6D4;
-  --void-black: #0A0A0B;
-  --shadow-gray: #1A1A1C;
-  --mist-gray: #2D2D30;
-  --silver-text: #E5E5E7;
-  --ghost-text: #9CA3AF;
-  --amber-glow: #F59E0B;
-  --emerald-profit: #10B981;
-  --ruby-danger: #EF4444;
+	/* Quantum Owl Brand Colors */
+	--quantum-purple: #8b5cf6;
+	--cosmic-blue: #3b82f6;
+	--ethereal-cyan: #06b6d4;
+	--void-black: #0a0a0b;
+	--shadow-gray: #1a1a1c;
+	--mist-gray: #2d2d30;
+	--silver-text: #e5e5e7;
+	--ghost-text: #9ca3af;
+	--amber-glow: #f59e0b;
+	--emerald-profit: #10b981;
+	--ruby-danger: #ef4444;
 }
 
 /* Global Dark Theme */
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  background-color: var(--void-black);
-  color: var(--silver-text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+	max-width: 100vw;
+	overflow-x: hidden;
+	background-color: var(--void-black);
+	color: var(--silver-text);
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
-  background: linear-gradient(135deg, #0A0A0B 0%, #1A1A1C 50%, #0A0A0B 100%);
-  min-height: 100vh;
+	background: linear-gradient(135deg, #0a0a0b 0%, #1a1a1c 50%, #0a0a0b 100%);
+	min-height: 100vh;
 }
 
 /* Quantum Owl Gradients */
 .quantum-gradient {
-  background: linear-gradient(135deg, var(--quantum-purple) 0%, var(--cosmic-blue) 50%, var(--ethereal-cyan) 100%);
+	background: linear-gradient(
+		135deg,
+		var(--quantum-purple) 0%,
+		var(--cosmic-blue) 50%,
+		var(--ethereal-cyan) 100%
+	);
 }
 
 .mystical-glow {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+	box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
 }
 
-.owl-border {
-  border: 1px solid rgba(139, 92, 246, 0.2);
+.owl_border {
+	border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+	width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--void-black);
+	background: var(--void-black);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--quantum-purple);
-  border-radius: 4px;
+	background: var(--quantum-purple);
+	border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--cosmic-blue);
+	background: var(--cosmic-blue);
 }
 
 /* Quantum Cards */
 .quantum-card {
-  background: rgba(26, 26, 28, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 12px;
-  transition: all 0.3s ease;
+	background: rgba(26, 26, 28, 0.8);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(139, 92, 246, 0.2);
+	border-radius: 12px;
+	transition: all 0.3s ease;
 }
 
 .quantum-card:hover {
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+	border-color: rgba(139, 92, 246, 0.4);
+	box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
 }
 
 /* Mystical Buttons */
 .quantum-button {
-  background: linear-gradient(135deg, var(--quantum-purple), var(--cosmic-blue));
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+	background: linear-gradient(
+		135deg,
+		var(--quantum-purple),
+		var(--cosmic-blue)
+	);
+	color: white;
+	border: none;
+	padding: 12px 24px;
+	border-radius: 8px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
 }
 
 .quantum-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
 }
 
 .quantum-button:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.2),
+		transparent
+	);
+	transition: left 0.5s;
 }
 
 .quantum-button:hover:before {
-  left: 100%;
+	left: 100%;
 }
 
 /* Owl Badge Styles */
-.owl-badge {
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: var(--quantum-purple);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
+.owl_badge {
+	background: rgba(139, 92, 246, 0.1);
+	border: 1px solid rgba(139, 92, 246, 0.3);
+	color: var(--quantum-purple);
+	padding: 4px 12px;
+	border-radius: 20px;
+	font-size: 0.875rem;
+	font-weight: 500;
 }
 
 /* Alert Animations */
 @keyframes quantum-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
 }
 
 .quantum-pulse {
-  animation: quantum-pulse 2s ease-in-out infinite;
+	animation: quantum-pulse 2s ease-in-out infinite;
 }
 
 @keyframes mystical-float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
 }
 
 .mystical-float {
-  animation: mystical-float 3s ease-in-out infinite;
+	animation: mystical-float 3s ease-in-out infinite;
 }
 
 /* Text Gradients */
 .quantum-text {
-  background: linear-gradient(135deg, var(--quantum-purple) 0%, var(--cosmic-blue) 50%, var(--ethereal-cyan) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+	background: linear-gradient(
+		135deg,
+		var(--quantum-purple) 0%,
+		var(--cosmic-blue) 50%,
+		var(--ethereal-cyan) 100%
+	);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
 }
 
 /* Loading States */
 .quantum-skeleton {
-  background: linear-gradient(90deg,
-    rgba(139, 92, 246, 0.1) 25%,
-    rgba(139, 92, 246, 0.2) 50%,
-    rgba(139, 92, 246, 0.1) 75%
-  );
-  background-size: 200% 100%;
-  animation: quantum-shimmer 1.5s infinite;
+	background: linear-gradient(
+		90deg,
+		rgba(139, 92, 246, 0.1) 25%,
+		rgba(139, 92, 246, 0.2) 50%,
+		rgba(139, 92, 246, 0.1) 75%
+	);
+	background-size: 200% 100%;
+	animation: quantum-shimmer 1.5s infinite;
 }
 
 @keyframes quantum-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
 }
 
 /* Confidence Indicators */
-.confidence-high { color: var(--emerald-profit); }
-.confidence-medium { color: var(--amber-glow); }
-.confidence-low { color: var(--ruby-danger); }
+.confidence-high {
+	color: var(--emerald-profit);
+}
+.confidence-medium {
+	color: var(--amber-glow);
+}
+.confidence-low {
+	color: var(--ruby-danger);
+}
 
 /* Recommendation Badges */
 .rec-buy {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--emerald-profit);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+	background: rgba(16, 185, 129, 0.1);
+	color: var(--emerald-profit);
+	border: 1px solid rgba(16, 185, 129, 0.3);
 }
 .rec-sell {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--ruby-danger);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+	background: rgba(239, 68, 68, 0.1);
+	color: var(--ruby-danger);
+	border: 1px solid rgba(239, 68, 68, 0.3);
 }
 .rec-hold {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--amber-glow);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+	background: rgba(245, 158, 11, 0.1);
+	color: var(--amber-glow);
+	border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .quantum-card {
-    margin: 8px;
-  }
+	.quantum-card {
+		margin: 8px;
+	}
 
-  .quantum-button {
-    padding: 10px 20px;
-    font-size: 0.875rem;
-  }
+	.quantum-button {
+		padding: 10px 20px;
+		font-size: 0.875rem;
+	}
 }
 
 /* Focus States for Accessibility */
 .quantum-button:focus,
 .quantum-card:focus {
-  outline: 2px solid var(--quantum-purple);
-  outline-offset: 2px;
+	outline: 2px solid var(--quantum-purple);
+	outline-offset: 2px;
 }
 
 /* Print Styles */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
-  }
+	body {
+		background: white !important;
+		color: black !important;
+	}
 
-  .quantum-card {
-    border: 1px solid #ccc !important;
-    box-shadow: none !important;
-  }
+	.quantum-card {
+		border: 1px solid #ccc !important;
+		box-shadow: none !important;
+	}
 }
